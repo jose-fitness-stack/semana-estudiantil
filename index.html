@@ -16,127 +16,188 @@
 --accent2:#3b82f6;
 --accent3:#f59e0b;
 --border:#334155;
+--input-focus:#38bdf8;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
-body{background:var(--bg);color:var(--text);padding:30px;}
+*{box-sizing:border-box;margin:0;padding:0;font-family: 'Segoe UI', system-ui, sans-serif;}
+body{background:var(--bg);color:var(--text);padding:30px; line-height: 1.5;}
 
 header{text-align:center;margin-bottom:30px;}
-header h1{font-size:28px;margin-bottom:5px;}
-header p{color:var(--sub);}
+header h1{font-size:28px;margin-bottom:5px; letter-spacing: -0.5px;}
+header p{color:var(--sub); font-weight: 300;}
 
-.week-selector{
-text-align:center;
-margin-bottom:20px;
-}
-
+.week-selector{text-align:center;margin-bottom:20px;}
 .week-selector button{
-padding:8px 16px;
+padding:8px 20px;
 margin:5px;
-border:none;
-border-radius:8px;
+border:1px solid var(--border);
+border-radius:20px;
 cursor:pointer;
 background:var(--card-soft);
 color:var(--text);
+transition: 0.3s;
 }
-
 .week-selector button.active{
 background:var(--accent1);
 color:#000;
 font-weight:bold;
+border-color: var(--accent1);
 }
 
-.info-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-margin-bottom:30px;
+.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap; justify-content: center;}
+.tab{
+padding:10px 24px;
+border-radius:10px;
+border:none;
+cursor:pointer;
+background:var(--card-soft);
+color:var(--sub);
+font-weight: 600;
+transition: 0.3s;
 }
-
-.info-card{
-background:var(--card);
-padding:15px;
-border-radius:12px;
-border:1px solid var(--border);
-}
-
-.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap;}
-.tab{padding:10px 18px;border-radius:8px;border:none;cursor:pointer;background:var(--card-soft);color:var(--text);}
-.tab.active{background:var(--accent2);}
+.tab.active{background:var(--accent2); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);}
 
 .day{display:none;}
-.day.active{display:block;}
+.day.active{display:block; animation: fadeIn 0.4s ease;}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .day-card{
 background:var(--card);
-padding:25px;
-border-radius:16px;
+padding:30px;
+border-radius:20px;
 margin-bottom:25px;
-border:1px solid var(--border);
+border: 1px solid var(--border);
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .day-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px;
-flex-wrap:wrap;
+margin-bottom:25px;
+border-bottom: 1px solid var(--border);
+padding-bottom: 15px;
 }
 
-.block{margin-bottom:20px;padding:15px;background:var(--card-soft);border-radius:12px;}
-.block h3{margin-bottom:10px;color:var(--accent2);}
-.task{padding:6px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.block{
+margin-bottom:25px;
+padding:20px;
+background: rgba(255,255,255,0.03);
+border-radius:15px;
+border: 1px solid rgba(255,255,255,0.05);
+}
 
+.block h3{
+margin-bottom:15px;
+color: var(--accent2);
+font-size: 14px;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* --- ESTILO PROFESIONAL DE INPUTS --- */
+.task{
+padding:10px;
+margin-bottom: 8px;
+background: var(--card-soft);
+border-radius: 8px;
+display:flex;
+align-items:center;
+gap:12px;
+transition: 0.2s;
+}
+
+.task:hover{ background: #2d3d5a; }
+
+.task input{
+background: transparent;
+border: 1px solid transparent;
+color: var(--text);
+padding: 5px 8px;
+border-radius: 4px;
+transition: 0.2s;
+}
+
+.task input:hover{ border-color: var(--border); }
+
+.task input:focus{
+outline: none;
+background: var(--bg);
+border-color: var(--input-focus);
+}
+
+.task .input-time{
+width:55px;
+font-weight: bold;
+color: var(--accent1);
+text-align: center;
+}
+
+.task .input-name{
+flex:1;
+font-size: 14px;
+}
+
+.add-btn{
+margin-top:10px;
+padding:8px 15px;
+border: 1px dashed var(--accent2);
+border-radius:8px;
+background: transparent;
+color: var(--accent2);
+cursor:pointer;
+font-size: 13px;
+transition: 0.3s;
+}
+.add-btn:hover{ background: rgba(59, 130, 246, 0.1); }
+
+/* --- ASISTENCIA --- */
 .checklist{
 margin-top:20px;
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:10px;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:12px;
 }
 
 .player{
 background:var(--card-soft);
-padding:10px;
-border-radius:8px;
+padding:12px;
+border-radius:10px;
 font-size:13px;
 display:flex;
 align-items:center;
-gap:10px;
+gap:12px;
+cursor: pointer;
+user-select: none;
+}
+.player:hover{ background: #2d3d5a; }
+.player input[type="checkbox"]{ width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent1); }
+
+.progress-container{margin:30px 0;}
+.progress-label{
+display:flex;
+justify-content:space-between;
+font-size: 13px;
+margin-bottom:8px;
+color: var(--sub);
 }
 
-.progress-container{margin:20px 0;}
-.progress-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;}
-
-.progress-bar{
-height:12px;
-background:var(--card-soft);
-border-radius:20px;
-overflow:hidden;
-}
-
-.progress{
-height:100%;
-background:var(--accent1);
-width:0%;
-transition:.4s;
-}
+.progress-bar{ height:8px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
+.progress{ height:100%; background: linear-gradient(90deg, #22c55e, #4ade80); width:0%; transition:0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
 .export-btn{
-margin-top:15px;
-padding:8px 14px;
+margin-top:20px;
+width: 100%;
+padding:12px;
 border:none;
-border-radius:8px;
+border-radius:10px;
 background:var(--accent3);
+color: #000;
 cursor:pointer;
 font-weight:bold;
-}
-
-.summary{
-background:var(--card);
-padding:20px;
-border-radius:16px;
-border:1px solid var(--border);
-margin-top:20px;
+text-transform: uppercase;
+letter-spacing: 1px;
 }
 </style>
 </head>
@@ -162,7 +223,6 @@ margin-top:20px;
 <div id="content"></div>
 
 <script>
-
 let currentWeek = 3;
 
 const playerList = [
@@ -176,43 +236,28 @@ const playerList = [
 ];
 
 const plans = {
-
 3:{
 lunes:{
-inicial:["10' Movilidad articular + desplazamiento","10' Secuencia pases + tercer hombre","10' Rondo 4v1 / 5v2"],
-central:["20' Posesión 6v6+8","20' Juego condicionado 10v10 (3 carriles)"],
-final:["20' Trabajo aeróbico intermitente"]
+inicial:[{time:10,name:"Movilidad articular + desplazamiento"},{time:10,name:"Secuencia pases + tercer hombre"},{time:10,name:"Rondo 4v1 / 5v2"}],
+central:[{time:20,name:"Posesión 6v6+8"},{time:20,name:"Juego condicionado 10v10"}],
+final:[{time:20,name:"Trabajo aeróbico intermitente"}]
 },
 martes:{
-inicial:["10' Activación cognitiva","10' Preventivos"],
-central:["20' Circuito fuerza","15' Rechazos orientados","15' Conservación con comodines"],
-final:["20' Pases con finalización"]
+inicial:[{time:10,name:"Activación cognitiva"},{time:10,name:"Preventivos"}],
+central:[{time:20,name:"Circuito fuerza"},{time:15,name:"Rechazos orientados"},{time:15,name:"Conservación con comodines"}],
+final:[{time:20,name:"Pases con finalización"}]
 },
 jueves:{
-inicial:["10' Movilidad + desplazamiento","10' Aceleraciones","10' Técnica de carrera"],
-central:["20' Duelos 1v1 - 2v2","40' Fútbol alta intensidad"],
-final:["10' Estiramientos"]
+inicial:[{time:10,name:"Movilidad + desplazamiento"},{time:10,name:"Aceleraciones"},{time:10,name:"Técnica de carrera"}],
+central:[{time:20,name:"Duelos 1v1 - 2v2"},{time:40,name:"Fútbol alta intensidad"}],
+final:[{time:10,name:"Estiramientos"}]
 }
 },
-
 4:{
-lunes:{
-inicial:["Agregar nueva tarea inicial"],
-central:["Agregar tarea central"],
-final:["Agregar tarea final"]
-},
-martes:{
-inicial:["Editar aquí semana 4"],
-central:["Editar aquí semana 4"],
-final:["Editar aquí semana 4"]
-},
-jueves:{
-inicial:["Editar aquí semana 4"],
-central:["Editar aquí semana 4"],
-final:["Editar aquí semana 4"]
+lunes:{inicial:[],central:[],final:[]},
+martes:{inicial:[],central:[],final:[]},
+jueves:{inicial:[],central:[],final:[]}
 }
-}
-
 };
 
 function renderWeek(){
@@ -220,50 +265,54 @@ const container=document.getElementById("content");
 container.innerHTML="";
 
 ["lunes","martes","jueves"].forEach(day=>{
-
-let dayData = plans[currentWeek][day];
-
+let data=plans[currentWeek][day];
 let html=`
 <div class="day ${day==='lunes'?'active':''}" id="${day}">
 <div class="day-card">
 <div class="day-header">
 <h2>${day.toUpperCase()}</h2>
-<span>Semana ${currentWeek}</span>
+<span style="color: var(--sub); font-size: 14px;">Semana ${currentWeek}</span>
 </div>
 
-<div class="block">
-<h3>Parte Inicial</h3>
-${dayData.inicial.map(t=>`<div class="task">${t}</div>`).join("")}
-</div>
-
-<div class="block">
-<h3>Parte Central</h3>
-${dayData.central.map(t=>`<div class="task">${t}</div>`).join("")}
-</div>
-
-<div class="block">
-<h3>Parte Final</h3>
-${dayData.final.map(t=>`<div class="task">${t}</div>`).join("")}
-</div>
+${renderBlock(day,"inicial","Parte Inicial",data.inicial)}
+${renderBlock(day,"central","Parte Central",data.central)}
+${renderBlock(day,"final","Parte Final",data.final)}
 
 <div class="progress-container">
 <div class="progress-label">
-<span>Asistencia</span>
+<span>Asistencia Jugadores</span>
 <span id="stat-${day}">0 / 18</span>
 </div>
 <div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
 </div>
 
 <div class="checklist" id="check-${day}"></div>
+<button class="export-btn" onclick="exportToExcel('${day}')">Descargar Reporte .CSV</button>
 
-<button class="export-btn" onclick="exportToExcel('${day}')">Exportar a Excel</button>
-
-</div>
-</div>`;
-
+</div></div>`;
 container.innerHTML+=html;
 generateChecklist(day);
 });
+}
+
+function renderBlock(day,type,title,data){
+return `
+<div class="block">
+<h3>${title}</h3>
+${data.map((task,i)=>`
+<div class="task">
+<input type="number" class="input-time" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value">
+<span style="color:var(--sub); font-size:12px;">min</span>
+<input type="text" class="input-name" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
+</div>
+`).join("")}
+<button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir actividad</button>
+</div>`;
+}
+
+function addTask(day,type){
+plans[currentWeek][day][type].push({time:10,name:"Nueva actividad"});
+renderWeek();
 }
 
 function generateChecklist(day){
@@ -271,6 +320,13 @@ const container=document.getElementById("check-"+day);
 playerList.forEach((name,i)=>{
 let div=document.createElement("div");
 div.className="player";
+div.onclick = (e) => {
+    if(e.target.tagName !== 'INPUT') {
+        const cb = div.querySelector('input');
+        cb.checked = !cb.checked;
+        updateProgress(day);
+    }
+};
 div.innerHTML=`<input type="checkbox" onchange="updateProgress('${day}')">
 <label>${i+1}. ${name}</label>`;
 container.appendChild(div);
@@ -292,10 +348,10 @@ let name=p.querySelector("label").innerText;
 let checked=p.querySelector("input").checked?"Sí":"No";
 csv+=`${name},${checked}\n`;
 });
-let blob=new Blob([csv],{type:"text/csv"});
+let blob=new Blob(["\ufeff" + csv],{type:"text/csv;charset=utf-8"});
 let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
-link.download=`Semana${currentWeek}_${day}.csv`;
+link.download=`Asistencia_Semana${currentWeek}_${day}.csv`;
 link.click();
 }
 
