@@ -3,286 +3,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Coach Dashboard - CD Estudiantil</title>
+<title>Dashboard Pro - CD Estudiantil</title>
 
 <style>
 :root{
---bg:#0f172a; /* Fondo pizarra profundo */
---card:#1e293b; /* Azul noche para tarjetas */
---card-soft:#273449; /* Para inputs y hovers */
---text:#f8fafc; /* Blanco humo */
---sub:#94a3b8; /* Gris azulado */
---accent1:#22c55e; /* Verde éxito */
---accent2:#3b82f6; /* Azul deportivo */
---accent3:#f59e0b; /* Ambar para reportes */
---danger:#f43f5e; /* Rojo coral para eliminar */
---border:#334155;
+--bg:#0f172a; --card:#1e293b; --card-soft:#273449; --text:#f1f5f9;
+--sub:#94a3b8; --accent1:#22c55e; --accent2:#3b82f6; --accent3:#f59e0b;
+--danger:#f43f5e; --border:#334155;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family: 'Inter', system-ui, sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system, sans-serif;}
 body{background:var(--bg);color:var(--text);padding:20px; padding-bottom: 120px;}
 
-header{text-align:center;margin-bottom:30px;}
-header h1{font-size:26px; letter-spacing: -0.5px;}
+header{text-align:center;margin-bottom:20px;}
+header h1{font-size:24px; margin-bottom: 4px;}
 header p{color:var(--sub); font-size: 14px;}
 
-.week-selector{text-align:center;margin-bottom:20px;}
-.week-selector button{
-padding:8px 20px; margin:0 5px; border:1px solid var(--border);
-border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text); font-size: 13px;
+/* --- PANEL FLOTANTE (CRONÓMETRO Y MARCADOR) --- */
+#control-panel {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--card); border: 2px solid var(--accent2);
+    padding: 12px 20px; border-radius: 50px; z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex; align-items: center; gap: 15px; width: max-content;
 }
-.week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; border-color: var(--accent1); }
+#timer-display { font-family: monospace; font-size: 20px; font-weight: bold; color: var(--accent2); }
+.btn-round { background: var(--card-soft); border: 1px solid var(--border); color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;}
+.score-box { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
 
-.tabs{display:flex;gap:8px;margin-bottom:25px;flex-wrap:wrap; justify-content: center;}
-.tab{ padding:10px 16px; border-radius:12px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; font-size: 13px; transition: 0.3s;}
-.tab.active{background:var(--accent2); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);}
-.tab-comp.active{background:var(--accent3); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);}
+/* --- MODAL GOLEADORES --- */
+#goal-modal {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: var(--card); border: 2px solid var(--accent1); padding: 20px;
+    border-radius: 15px; z-index: 2000; width: 85%; max-width: 350px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+.goal-list-btn { width: 100%; padding: 10px; margin-bottom: 5px; background: var(--card-soft); border: none; color: white; border-radius: 8px; text-align: left; cursor: pointer; font-size: 13px; }
+.goal-list-btn:hover { background: var(--accent1); color: black; }
+
+.week-selector{text-align:center;margin-bottom:20px;}
+.week-selector button{ padding:8px 16px; margin:0 4px; border:none; border-radius:8px; cursor:pointer; background:var(--card-soft); color:var(--text); font-size: 13px;}
+.week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; }
+
+.tabs{display:flex;gap:8px;margin-bottom:20px;justify-content: center; flex-wrap: wrap;}
+.tab{ padding:10px 16px; border-radius:10px; border:none; cursor:pointer; background:var(--card-soft); color:var(--text); font-weight: 600; font-size: 13px;}
+.tab.active{background:var(--accent2);}
+.tab-comp.active{background:var(--accent3);}
 
 .day{display:none;}
-.day.active{display:block; animation: fadeIn 0.3s ease-in-out;}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.day.active{display:block;}
+.day-card{ background:var(--card); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:20px; }
 
-.day-card{ background:var(--card); padding:25px; border-radius:18px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.block{ margin-bottom:15px; padding:15px; background:var(--card-soft); border-radius:12px; }
+.block h3{ margin-bottom:10px; color:var(--accent2); font-size: 14px; text-transform: uppercase;}
 
-.block{ margin-bottom:20px; padding:18px; background: rgba(255,255,255,0.02); border-radius:14px; border: 1px solid rgba(255,255,255,0.05); }
-.block h3{ margin-bottom:12px; color: var(--accent2); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.task{ padding:6px 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.task input{ background:transparent; border:none; color:white; font-size: 14px;}
+.task input[type="number"]{ width:40px; color:var(--accent1); font-weight:bold; }
+.task input[type="text"]{ flex:1; }
 
-/* Campos Modificables Estilizados */
-.task{
-padding:6px 10px; margin-bottom: 8px; background: var(--card-soft);
-border-radius: 8px; display:flex; align-items:center; gap:10px; border: 1px solid transparent;
-}
-.task:focus-within { border-color: var(--accent2); }
-.task input{ background: transparent; border: none; color: var(--text); font-size: 14px; }
-.task input:focus{ outline: none; }
-.task .input-time{ width:45px; font-weight: bold; color: var(--accent1); text-align: center; }
-.task .input-name{ flex:1; }
+.add-btn{ margin-top:10px; padding:6px 12px; border:none; border-radius:6px; background:var(--accent2); color:white; cursor:pointer; font-size: 12px;}
+.del-task{ color:var(--danger); background:none; border:none; cursor:pointer; font-weight:bold; padding: 0 5px;}
 
-.delete-btn{ background: none; border: none; color: var(--sub); cursor: pointer; font-size: 18px; transition: 0.2s; }
-.delete-btn:hover{ color: var(--danger); }
+.checklist{ margin-top:15px; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.player{ background:var(--card-soft); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:8px; }
 
-.add-btn{
-margin-top:5px; padding:6px 12px; border: 1px dashed var(--accent2);
-border-radius:8px; background: transparent; color: var(--accent2);
-cursor:pointer; font-size: 12px; font-weight: 600;
-}
+.progress-container{margin:20px 0;}
+.progress-bar{ height:10px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
+.progress{ height:100%; background:var(--accent1); width:0%; transition:.4s; }
 
-/* Apartado Competencia */
-.comp-input {
-    width: 100%; background: var(--card-soft); border: 1px solid var(--border);
-    color: var(--text); padding: 12px; border-radius: 10px; margin-bottom: 10px;
-}
-
-.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top: 15px; }
-.player{ background:var(--card-soft); padding:10px; border-radius:10px; font-size:12px; display:flex; align-items:center; gap:10px; cursor: pointer; border: 1px solid transparent;}
-.player:hover { border-color: var(--border); }
-.player input{ accent-color: var(--accent1); width: 16px; height: 16px; }
-
-.progress-container{margin:25px 0;}
-.progress-label{ display:flex; justify-content:space-between; font-size: 13px; margin-bottom:8px; color: var(--sub); }
-.progress-bar{ height:8px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
-.progress{ height:100%; background: var(--accent1); width:0%; transition:0.5s; }
-
-.export-btn{
-width: 100%; padding:14px; border:none; border-radius:12px;
-background:var(--accent3); color: #000; cursor:pointer;
-font-weight:bold; text-transform: uppercase; font-size: 12px;
-}
+.export-btn{ width:100%; padding:12px; border:none; border-radius:10px; background:var(--accent3); cursor:pointer; font-weight:bold; margin-top:15px; }
 </style>
 </head>
-
 <body>
 
+<div id="goal-modal">
+    <h3 style="margin-bottom:15px;">⚽ ¿Quién marcó el gol?</h3>
+    <div id="goal-players-list" style="max-height:250px; overflow-y:auto;"></div>
+    <button onclick="closeGoalModal()" style="width:100%; margin-top:10px; padding:8px; background:var(--danger); border:none; color:white; border-radius:8px;">Cancelar</button>
+</div>
+
+<div id="control-panel">
+    <div id="timer-display">00:00</div>
+    <button class="btn-round" onclick="toggleTimer()" id="t-btn">▶</button>
+    <button class="btn-round" onclick="resetTimer()">🔄</button>
+    
+    <div style="width:1px; height:25px; background:var(--border);"></div>
+
+    <div class="score-box">
+        <span style="font-size:10px; color:var(--accent1)">L</span>
+        <button class="btn-round" style="width:24px; height:24px;" onclick="openGoalModal()">+</button>
+        <span id="score-l" style="font-weight:bold; min-width:15px; text-align:center;">0</span>
+        <span style="color:var(--sub)">-</span>
+        <span id="score-v" style="font-weight:bold; min-width:15px; text-align:center;">0</span>
+        <button class="btn-round" style="width:24px; height:24px;" onclick="updateScore('v',1)">+</button>
+        <span style="font-size:10px; color:var(--sub)">V</span>
+    </div>
+</div>
+
 <header>
-<h1>⚽ CD Estudiantil</h1>
-<p>Sub 14 (2012) · DT: Jose Antonio Mazo</p>
+    <h1>⚽ CD Estudiantil</h1>
+    <p>Sub 14 (2012) · DT: Jose Antonio Mazo</p>
 </header>
 
 <div class="week-selector">
-<button class="active" onclick="changeWeek(3,this)">Semana 3</button>
-<button onclick="changeWeek(4,this)">Semana 4 (Planificación)</button>
+    <button id="w3-btn" class="active" onclick="changeWeek(3)">Semana 3</button>
+    <button id="w4-btn" onclick="changeWeek(4)">Semana 4</button>
 </div>
 
 <div class="tabs">
-<button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
-<button class="tab" onclick="showDay('martes',this)">Martes</button>
-<button class="tab" onclick="showDay('jueves',this)">Jueves</button>
-<button class="tab" style="border: 1px solid var(--accent3)" onclick="showDay('competencia',this)">🏆 Competencia</button>
+    <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
+    <button class="tab" onclick="showDay('martes',this)">Martes</button>
+    <button class="tab" onclick="showDay('jueves',this)">Jueves</button>
+    <button class="tab" style="border:1px solid var(--accent3)" onclick="showDay('competencia',this)">🏆 Partido</button>
 </div>
 
 <div id="content"></div>
 
 <script>
 let currentWeek = 3;
-const playerList = [
-"Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina",
-"Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano",
-"Roger Andrés","Jeronimo Blandón Bedoya","Juan Pablo Jaramillo Jaramillo",
-"Miguel Ángel Ruiz Villegas","Isaac Manuel Ramírez Bolaño",
-"Luis Said Andrade Hinestroza","Juan Miguel Ospina Villa",
-"Alexis Posada Zabala","Dylan Esteban Tovar Montenegro",
-"Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"
-];
+let timerInterval, seconds = 0, timerRunning = false;
+let scoreL = 0, scoreV = 0;
 
-// Datos de asistencia y competencia independientes
-let attendanceData = {
-    3: { lunes:{}, martes:{}, jueves:{}, competencia:{} },
-    4: { lunes:{}, martes:{}, jueves:{}, competencia:{} }
+const playerList = ["Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina","Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano","Roger Andrés","Jeronimo Blandón Bedoya","Juan Pablo Jaramillo Jaramillo","Miguel Ángel Ruiz Villegas","Isaac Manuel Ramírez Bolaño","Luis Said Andrade Hinestroza","Juan Miguel Ospina Villa","Alexis Posada Zabala","Dylan Esteban Tovar Montenegro","Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"];
+
+let appData = {
+    3: {
+        lunes: { inicial:[{time:10,name:"Movilidad articular"},{time:10,name:"Secuencia pases"}], central:[{time:20,name:"Posesión 6v6+8"}], final:[{time:20,name:"Aeróbico"}], attend:{} },
+        martes: { inicial:[{time:10,name:"Activación cognitiva"}], central:[{time:20,name:"Circuito fuerza"}], final:[{time:20,name:"Finalización"}], attend:{} },
+        jueves: { inicial:[{time:10,name:"Movilidad"}], central:[{time:40,name:"Fútbol alta intensidad"}], final:[{time:10,name:"Estiramientos"}], attend:{} },
+        competencia: { rival:"Rival", fecha:"2026-02-21", goals:[], attend:{} }
+    },
+    4: {
+        lunes: { inicial:[], central:[], final:[], attend:{} },
+        martes: { inicial:[], central:[], final:[], attend:{} },
+        jueves: { inicial:[], central:[], final:[], attend:{} },
+        competencia: { rival:"", fecha:"", goals:[], attend:{} }
+    }
 };
 
-const plans = {
-3:{
-lunes:{
-inicial:[{time:10,name:"Movilidad articular + desplazamiento"},{time:10,name:"Secuencia pases"},{time:10,name:"Rondo 4v1"}],
-central:[{time:20,name:"Posesión 6v6+8"},{time:20,name:"Juego condicionado"}],
-final:[{time:20,name:"Aeróbico intermitente"}],
-comp: { rival: "Rival Pendiente", fecha: "2026-02-21", resultado: "0-0" }
-},
-martes:{
-inicial:[{time:10,name:"Activación cognitiva"},{time:10,name:"Preventivos"}],
-central:[{time:20,name:"Circuito fuerza"},{time:15,name:"Rechazos"}],
-final:[{time:20,name:"Finalización"}]
-},
-jueves:{
-inicial:[{time:10,name:"Movilidad"},{time:10,name:"Aceleraciones"}],
-central:[{time:20,name:"Duelos"},{time:40,name:"Fútbol"}],
-final:[{time:10,name:"Estiramientos"}]
-}
-},
-4:{ // Semana limpia para modificar
-lunes:{ inicial:[], central:[], final:[] },
-martes:{ inicial:[], central:[], final:[] },
-jueves:{ inicial:[], central:[], final:[] },
-comp: { rival: "Por definir", fecha: "2026-02-28", resultado: "0-0" }
-}
-};
+function renderWeek() {
+    const container = document.getElementById("content");
+    container.innerHTML = "";
+    
+    ["lunes","martes","jueves"].forEach(day => {
+        let d = appData[currentWeek][day];
+        container.innerHTML += `
+        <div class="day ${day==='lunes'?'active':''}" id="${day}">
+            <div class="day-card">
+                <h2>${day.toUpperCase()}</h2>
+                ${renderBlock(day, 'inicial', 'Parte Inicial', d.inicial)}
+                ${renderBlock(day, 'central', 'Parte Central', d.central)}
+                ${renderBlock(day, 'final', 'Parte Final', d.final)}
+                <div class="progress-container">
+                    <div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
+                </div>
+                <div class="checklist" id="check-${day}"></div>
+                <button class="export-btn" onclick="exportExcel('${day}')">Exportar Día</button>
+            </div>
+        </div>`;
+        generateChecklist(day);
+    });
 
-function renderWeek(){
-const container=document.getElementById("content");
-container.innerHTML="";
-
-// Días de entrenamiento
-["lunes","martes","jueves"].forEach(day=>{
-let data=plans[currentWeek][day];
-let html=`
-<div class="day ${day==='lunes'?'active':''}" id="${day}">
-<div class="day-card">
-<h2 style="margin-bottom:20px; font-size:18px;">${day.toUpperCase()} - SEMANA ${currentWeek}</h2>
-
-${renderBlock(day,"inicial","Parte Inicial",data.inicial)}
-${renderBlock(day,"central","Parte Central",data.central)}
-${renderBlock(day,"final","Parte Final",data.final)}
-
-${renderAttendanceSection(day)}
-</div></div>`;
-container.innerHTML+=html;
-generateChecklist(day);
-});
-
-// Apartado Competencia
-let compData = plans[currentWeek].comp || { rival: "Rival", fecha: "2026", resultado: "0-0" };
-let compHtml = `
-<div class="day" id="competencia">
-<div class="day-card">
-<h2 style="margin-bottom:20px; font-size:18px; color:var(--accent3)">🏆 INFORME DE COMPETENCIA</h2>
-<div class="block">
-    <label style="font-size:11px; color:var(--sub)">RIVAL / TORNEO</label>
-    <input type="text" class="comp-input" value="${compData.rival}" onchange="plans[currentWeek].comp.rival=this.value">
-    <label style="font-size:11px; color:var(--sub)">FECHA DEL ENCUENTRO</label>
-    <input type="date" class="comp-input" value="${compData.fecha}" onchange="plans[currentWeek].comp.fecha=this.value">
-</div>
-${renderAttendanceSection('competencia')}
-</div></div>`;
-container.innerHTML+=compHtml;
-generateChecklist('competencia');
+    // Pestaña Competencia
+    let c = appData[currentWeek].competencia;
+    container.innerHTML += `
+    <div class="day" id="competencia">
+        <div class="day-card">
+            <h2 style="color:var(--accent3)">DETALLES DEL PARTIDO</h2>
+            <div class="block">
+                <input type="text" placeholder="Rival" class="task" style="width:100%; padding:10px; margin-bottom:10px;" value="${c.rival}" onchange="appData[currentWeek].competencia.rival=this.value">
+                <input type="date" class="task" style="width:100%; padding:10px;" value="${c.fecha}" onchange="appData[currentWeek].competencia.fecha=this.value">
+            </div>
+            <div id="goals-list" style="margin-bottom:15px;">${c.goals.map(g => `<div>⚽ ${g.name} (${g.time})</div>`).join('')}</div>
+            <h3>Convocados</h3>
+            <div class="checklist" id="check-competencia"></div>
+        </div>
+    </div>`;
+    generateChecklist('competencia');
 }
 
-function renderBlock(day,type,title,data){
-return `
-<div class="block">
-<h3>${title}</h3>
-<div id="tasks-${day}-${type}">
-${data.map((task,i)=>`
-<div class="task">
-<input type="number" class="input-time" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value">
-<input type="text" class="input-name" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
-<button class="delete-btn" onclick="removeTask('${day}','${type}',${i})">×</button>
-</div>`).join("")}
-</div>
-<button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir Actividad</button>
-</div>`;
+function renderBlock(day, type, title, data) {
+    return `
+    <div class="block">
+        <h3>${title}</h3>
+        ${data.map((t, i) => `
+            <div class="task">
+                <input type="number" value="${t.time}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].time=this.value">
+                <input type="text" value="${t.name}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].name=this.value">
+                <button class="del-task" onclick="removeTask('${day}','${type}',${i})">×</button>
+            </div>
+        `).join('')}
+        <button class="add-btn" onclick="addTask('${day}','${type}')">+ Actividad</button>
+    </div>`;
 }
 
-function renderAttendanceSection(day){
-return `
-<div class="progress-container">
-<div class="progress-label"><span>Asistencia / Convocatoria</span><span id="stat-${day}">0 / 18</span></div>
-<div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
-</div>
-<div class="checklist" id="check-${day}"></div>
-<button class="export-btn" style="margin-top:20px" onclick="exportToExcel('${day}')">Exportar Asistencia (.csv)</button>`;
+function addTask(d,t){ appData[currentWeek][d][t].push({time:10,name:"Nueva"}); renderWeek(); }
+function removeTask(d,t,i){ appData[currentWeek][d][t].splice(i,1); renderWeek(); }
+
+function generateChecklist(day) {
+    const cont = document.getElementById("check-"+day);
+    playerList.forEach((name, i) => {
+        let div = document.createElement("div");
+        div.className = "player";
+        let isChecked = appData[currentWeek][day].attend[i] ? "checked" : "";
+        div.innerHTML = `<input type="checkbox" ${isChecked} onchange="appData[currentWeek]['${day}'].attend[${i}]=this.checked; updateProg('${day}')">
+                         <label>${name}</label>`;
+        cont.appendChild(div);
+    });
+    updateProg(day);
 }
 
-function addTask(day,type){
-plans[currentWeek][day][type].push({time:10,name:"Nueva actividad"});
-renderWeek();
+function updateProg(day) {
+    let checks = Object.values(appData[currentWeek][day].attend).filter(v => v).length;
+    let bar = document.getElementById("prog-"+day);
+    if(bar) bar.style.width = (checks/playerList.length)*100 + "%";
 }
 
-function removeTask(day,type,index){
-plans[currentWeek][day][type].splice(index, 1);
-renderWeek();
+/* MARCADOR Y GOLES */
+function updateScore(team, val) {
+    if(team === 'l') scoreL = Math.max(0, scoreL + val);
+    else scoreV = Math.max(0, scoreV + val);
+    document.getElementById("score-l").innerText = scoreL;
+    document.getElementById("score-v").innerText = scoreV;
 }
 
-function generateChecklist(day){
-const container=document.getElementById("check-"+day);
-if(!container) return;
-playerList.forEach((name,i)=>{
-let div=document.createElement("div");
-div.className="player";
-let isChecked = attendanceData[currentWeek][day][i] ? "checked" : "";
-div.innerHTML=`<input type="checkbox" ${isChecked} onchange="updateProgress('${day}', ${i}, this)">
-<label>${i+1}. ${name}</label>`;
-container.appendChild(div);
-});
-updateProgress(day);
+function openGoalModal() {
+    const list = document.getElementById("goal-players-list");
+    list.innerHTML = "";
+    playerList.forEach(p => {
+        let b = document.createElement("button");
+        b.className = "goal-list-btn";
+        b.innerText = p;
+        b.onclick = () => {
+            updateScore('l', 1);
+            appData[currentWeek].competencia.goals.push({name: p, time: document.getElementById("timer-display").innerText});
+            closeGoalModal();
+            renderWeek();
+        };
+        list.appendChild(b);
+    });
+    document.getElementById("goal-modal").style.display = "block";
+}
+function closeGoalModal() { document.getElementById("goal-modal").style.display = "none"; }
+
+/* CRONOMETRO */
+function toggleTimer() {
+    if(!timerRunning) {
+        timerInterval = setInterval(() => {
+            seconds++;
+            let m = Math.floor(seconds/60).toString().padStart(2,'0');
+            let s = (seconds%60).toString().padStart(2,'0');
+            document.getElementById("timer-display").innerText = `${m}:${s}`;
+        }, 1000);
+        document.getElementById("t-btn").innerText = "⏸";
+    } else {
+        clearInterval(timerInterval);
+        document.getElementById("t-btn").innerText = "▶";
+    }
+    timerRunning = !timerRunning;
+}
+function resetTimer() { 
+    clearInterval(timerInterval); seconds = 0; timerRunning = false; 
+    document.getElementById("timer-display").innerText = "00:00"; 
+    document.getElementById("t-btn").innerText = "▶"; 
 }
 
-function updateProgress(day, index, el){
-if(index !== undefined) attendanceData[currentWeek][day][index] = el.checked;
-const checks = Object.values(attendanceData[currentWeek][day]).filter(v => v).length;
-document.getElementById("prog-"+day).style.width=(checks/playerList.length)*100+"%";
-document.getElementById("stat-"+day).innerText=`${checks} / ${playerList.length}`;
+function showDay(id, btn) {
+    document.querySelectorAll('.day').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
 }
 
-function exportToExcel(day){
-let csv="\ufeffJugador,Asistencia\n";
-playerList.forEach((name, i) => {
-    let status = attendanceData[currentWeek][day][i] ? "Presente" : "Ausente";
-    csv += `${name},${status}\n`;
-});
-let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-let link=document.createElement("a");
-link.href=URL.createObjectURL(blob);
-link.download=`Asistencia_${day}_S${currentWeek}.csv`;
-link.click();
+function changeWeek(w) {
+    currentWeek = w;
+    document.getElementById("w3-btn").classList.toggle("active", w===3);
+    document.getElementById("w4-btn").classList.toggle("active", w===4);
+    renderWeek();
 }
 
-function showDay(id,btn){
-document.querySelectorAll('.day').forEach(d=>d.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-btn.classList.add('active');
-}
-
-function changeWeek(week,btn){
-currentWeek=week;
-document.querySelectorAll('.week-selector button').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-renderWeek();
+function exportExcel(day) {
+    let csv = "\ufeffJugador,Asistencia\n";
+    playerList.forEach((p, i) => {
+        csv += `${p},${appData[currentWeek][day].attend[i] ? 'SI' : 'NO'}\n`;
+    });
+    let blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `Asistencia_${day}_S${currentWeek}.csv`;
+    link.click();
 }
 
 renderWeek();
 </script>
-
 </body>
 </html>
