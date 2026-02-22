@@ -16,188 +16,149 @@
 --accent2:#3b82f6;
 --accent3:#f59e0b;
 --border:#334155;
---input-focus:#38bdf8;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family: 'Segoe UI', system-ui, sans-serif;}
-body{background:var(--bg);color:var(--text);padding:30px; line-height: 1.5;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
+body{background:var(--bg);color:var(--text);padding:30px;}
 
 header{text-align:center;margin-bottom:30px;}
-header h1{font-size:28px;margin-bottom:5px; letter-spacing: -0.5px;}
-header p{color:var(--sub); font-weight: 300;}
+header h1{font-size:28px;margin-bottom:5px;}
+header p{color:var(--sub);}
 
 .week-selector{text-align:center;margin-bottom:20px;}
 .week-selector button{
-padding:8px 20px;
+padding:8px 16px;
 margin:5px;
-border:1px solid var(--border);
-border-radius:20px;
+border:none;
+border-radius:8px;
 cursor:pointer;
 background:var(--card-soft);
 color:var(--text);
-transition: 0.3s;
 }
 .week-selector button.active{
 background:var(--accent1);
 color:#000;
 font-weight:bold;
-border-color: var(--accent1);
 }
 
-.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap; justify-content: center;}
+.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap;}
 .tab{
-padding:10px 24px;
-border-radius:10px;
+padding:10px 18px;
+border-radius:8px;
 border:none;
 cursor:pointer;
 background:var(--card-soft);
-color:var(--sub);
-font-weight: 600;
-transition: 0.3s;
+color:var(--text);
 }
-.tab.active{background:var(--accent2); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);}
+.tab.active{background:var(--accent2);}
 
 .day{display:none;}
-.day.active{display:block; animation: fadeIn 0.4s ease;}
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.day.active{display:block;}
 
 .day-card{
 background:var(--card);
-padding:30px;
-border-radius:20px;
+padding:25px;
+border-radius:16px;
 margin-bottom:25px;
-border: 1px solid var(--border);
-box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+border:1px solid var(--border);
 }
 
 .day-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
-border-bottom: 1px solid var(--border);
-padding-bottom: 15px;
+margin-bottom:20px;
+flex-wrap:wrap;
 }
 
 .block{
-margin-bottom:25px;
-padding:20px;
-background: rgba(255,255,255,0.03);
-border-radius:15px;
-border: 1px solid rgba(255,255,255,0.05);
+margin-bottom:20px;
+padding:15px;
+background:var(--card-soft);
+border-radius:12px;
 }
 
 .block h3{
-margin-bottom:15px;
-color: var(--accent2);
-font-size: 14px;
-text-transform: uppercase;
-letter-spacing: 1px;
+margin-bottom:10px;
+color:var(--accent2);
 }
 
-/* --- ESTILO PROFESIONAL DE INPUTS --- */
 .task{
-padding:10px;
-margin-bottom: 8px;
-background: var(--card-soft);
-border-radius: 8px;
+padding:6px 0;
+border-bottom:1px solid var(--border);
+font-size:14px;
 display:flex;
 align-items:center;
-gap:12px;
-transition: 0.2s;
+flex-wrap:wrap;
+gap:6px;
 }
 
-.task:hover{ background: #2d3d5a; }
-
-.task input{
-background: transparent;
-border: 1px solid transparent;
-color: var(--text);
-padding: 5px 8px;
-border-radius: 4px;
-transition: 0.2s;
+.task input[type="number"]{
+width:60px;
 }
 
-.task input:hover{ border-color: var(--border); }
-
-.task input:focus{
-outline: none;
-background: var(--bg);
-border-color: var(--input-focus);
-}
-
-.task .input-time{
-width:55px;
-font-weight: bold;
-color: var(--accent1);
-text-align: center;
-}
-
-.task .input-name{
+.task input[type="text"]{
 flex:1;
-font-size: 14px;
+min-width:180px;
 }
 
 .add-btn{
 margin-top:10px;
-padding:8px 15px;
-border: 1px dashed var(--accent2);
-border-radius:8px;
-background: transparent;
-color: var(--accent2);
+padding:5px 10px;
+border:none;
+border-radius:6px;
+background:var(--accent2);
+color:white;
 cursor:pointer;
-font-size: 13px;
-transition: 0.3s;
 }
-.add-btn:hover{ background: rgba(59, 130, 246, 0.1); }
 
-/* --- ASISTENCIA --- */
 .checklist{
 margin-top:20px;
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:12px;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:10px;
 }
 
 .player{
 background:var(--card-soft);
-padding:12px;
-border-radius:10px;
+padding:10px;
+border-radius:8px;
 font-size:13px;
 display:flex;
 align-items:center;
-gap:12px;
-cursor: pointer;
-user-select: none;
+gap:10px;
 }
-.player:hover{ background: #2d3d5a; }
-.player input[type="checkbox"]{ width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent1); }
 
-.progress-container{margin:30px 0;}
+.progress-container{margin:20px 0;}
 .progress-label{
 display:flex;
 justify-content:space-between;
-font-size: 13px;
-margin-bottom:8px;
-color: var(--sub);
+font-size:14px;
+margin-bottom:5px;
 }
 
-.progress-bar{ height:8px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
-.progress{ height:100%; background: linear-gradient(90deg, #22c55e, #4ade80); width:0%; transition:0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+.progress-bar{
+height:12px;
+background:var(--card-soft);
+border-radius:20px;
+overflow:hidden;
+}
+
+.progress{
+height:100%;
+background:var(--accent1);
+width:0%;
+transition:.4s;
+}
 
 .export-btn{
-margin-top:20px;
-width: 100%;
-padding:12px;
+margin-top:15px;
+padding:8px 14px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 background:var(--accent3);
-color: #000;
 cursor:pointer;
 font-weight:bold;
-text-transform: uppercase;
-letter-spacing: 1px;
 }
 </style>
 </head>
@@ -223,6 +184,7 @@ letter-spacing: 1px;
 <div id="content"></div>
 
 <script>
+
 let currentWeek = 3;
 
 const playerList = [
@@ -236,28 +198,58 @@ const playerList = [
 ];
 
 const plans = {
+
 3:{
 lunes:{
-inicial:[{time:10,name:"Movilidad articular + desplazamiento"},{time:10,name:"Secuencia pases + tercer hombre"},{time:10,name:"Rondo 4v1 / 5v2"}],
-central:[{time:20,name:"Posesión 6v6+8"},{time:20,name:"Juego condicionado 10v10"}],
-final:[{time:20,name:"Trabajo aeróbico intermitente"}]
+inicial:[
+{time:10,name:"Movilidad articular + desplazamiento"},
+{time:10,name:"Secuencia pases + tercer hombre"},
+{time:10,name:"Rondo 4v1 / 5v2"}
+],
+central:[
+{time:20,name:"Posesión 6v6+8"},
+{time:20,name:"Juego condicionado 10v10 (3 carriles)"}
+],
+final:[
+{time:20,name:"Trabajo aeróbico intermitente"}
+]
 },
 martes:{
-inicial:[{time:10,name:"Activación cognitiva"},{time:10,name:"Preventivos"}],
-central:[{time:20,name:"Circuito fuerza"},{time:15,name:"Rechazos orientados"},{time:15,name:"Conservación con comodines"}],
-final:[{time:20,name:"Pases con finalización"}]
+inicial:[
+{time:10,name:"Activación cognitiva"},
+{time:10,name:"Preventivos"}
+],
+central:[
+{time:20,name:"Circuito fuerza"},
+{time:15,name:"Rechazos orientados"},
+{time:15,name:"Conservación con comodines"}
+],
+final:[
+{time:20,name:"Pases con finalización"}
+]
 },
 jueves:{
-inicial:[{time:10,name:"Movilidad + desplazamiento"},{time:10,name:"Aceleraciones"},{time:10,name:"Técnica de carrera"}],
-central:[{time:20,name:"Duelos 1v1 - 2v2"},{time:40,name:"Fútbol alta intensidad"}],
-final:[{time:10,name:"Estiramientos"}]
+inicial:[
+{time:10,name:"Movilidad + desplazamiento"},
+{time:10,name:"Aceleraciones"},
+{time:10,name:"Técnica de carrera"}
+],
+central:[
+{time:20,name:"Duelos 1v1 - 2v2"},
+{time:40,name:"Fútbol alta intensidad"}
+],
+final:[
+{time:10,name:"Estiramientos"}
+]
 }
 },
+
 4:{
 lunes:{inicial:[],central:[],final:[]},
 martes:{inicial:[],central:[],final:[]},
 jueves:{inicial:[],central:[],final:[]}
 }
+
 };
 
 function renderWeek(){
@@ -266,12 +258,13 @@ container.innerHTML="";
 
 ["lunes","martes","jueves"].forEach(day=>{
 let data=plans[currentWeek][day];
+
 let html=`
 <div class="day ${day==='lunes'?'active':''}" id="${day}">
 <div class="day-card">
 <div class="day-header">
 <h2>${day.toUpperCase()}</h2>
-<span style="color: var(--sub); font-size: 14px;">Semana ${currentWeek}</span>
+<span>Semana ${currentWeek}</span>
 </div>
 
 ${renderBlock(day,"inicial","Parte Inicial",data.inicial)}
@@ -280,16 +273,17 @@ ${renderBlock(day,"final","Parte Final",data.final)}
 
 <div class="progress-container">
 <div class="progress-label">
-<span>Asistencia Jugadores</span>
+<span>Asistencia</span>
 <span id="stat-${day}">0 / 18</span>
 </div>
 <div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
 </div>
 
 <div class="checklist" id="check-${day}"></div>
-<button class="export-btn" onclick="exportToExcel('${day}')">Descargar Reporte .CSV</button>
+<button class="export-btn" onclick="exportToExcel('${day}')">Exportar a Excel</button>
 
 </div></div>`;
+
 container.innerHTML+=html;
 generateChecklist(day);
 });
@@ -301,12 +295,11 @@ return `
 <h3>${title}</h3>
 ${data.map((task,i)=>`
 <div class="task">
-<input type="number" class="input-time" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value">
-<span style="color:var(--sub); font-size:12px;">min</span>
-<input type="text" class="input-name" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
+<input type="number" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value"> min
+<input type="text" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
 </div>
 `).join("")}
-<button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir actividad</button>
+<button class="add-btn" onclick="addTask('${day}','${type}')">+ Agregar actividad</button>
 </div>`;
 }
 
@@ -320,13 +313,6 @@ const container=document.getElementById("check-"+day);
 playerList.forEach((name,i)=>{
 let div=document.createElement("div");
 div.className="player";
-div.onclick = (e) => {
-    if(e.target.tagName !== 'INPUT') {
-        const cb = div.querySelector('input');
-        cb.checked = !cb.checked;
-        updateProgress(day);
-    }
-};
 div.innerHTML=`<input type="checkbox" onchange="updateProgress('${day}')">
 <label>${i+1}. ${name}</label>`;
 container.appendChild(div);
@@ -348,10 +334,10 @@ let name=p.querySelector("label").innerText;
 let checked=p.querySelector("input").checked?"Sí":"No";
 csv+=`${name},${checked}\n`;
 });
-let blob=new Blob(["\ufeff" + csv],{type:"text/csv;charset=utf-8"});
+let blob=new Blob([csv],{type:"text/csv"});
 let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
-link.download=`Asistencia_Semana${currentWeek}_${day}.csv`;
+link.download=`Semana${currentWeek}_${day}.csv`;
 link.click();
 }
 
@@ -370,6 +356,7 @@ renderWeek();
 }
 
 renderWeek();
+
 </script>
 
 </body>
