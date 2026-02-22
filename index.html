@@ -13,91 +13,54 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family: 'Segoe UI', system-ui, sans-serif;}
-body{background:var(--bg);color:var(--text);padding:20px; padding-bottom: 120px; line-height: 1.5;}
+body{background:var(--bg);color:var(--text);padding:20px; line-height: 1.5;}
 
-/* --- TIMER & SCORE FLOATING --- */
+/* --- TIMER FLOATING --- */
 #timer-float {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--card); color: white; padding: 12px 20px; border-radius: 50px; 
-    z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
-    display: flex; align-items: center; gap: 15px; border: 2px solid var(--accent2);
-    width: 90%; max-width: 500px; justify-content: space-between;
+    position: fixed; bottom: 20px; right: 20px; background: var(--accent2);
+    color: white; padding: 15px 25px; border-radius: 50px; z-index: 1000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 15px;
 }
-#timer-display { font-family: monospace; font-size: 18px; font-weight: bold; color: var(--accent2); }
-.timer-btn { background: var(--card-soft); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;}
-
-.score-control { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 30px; }
-.score-num { font-size: 18px; font-weight: bold; min-width: 20px; text-align: center; }
-.btn-score { background: none; border: 1px solid var(--border); color: var(--text); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-
-/* --- GOAL SELECTOR --- */
-#goal-modal {
-    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    background: var(--card); border: 2px solid var(--accent1); padding: 20px;
-    border-radius: 15px; z-index: 2000; width: 85%; max-width: 350px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.8);
-}
-.goal-player-btn {
-    width: 100%; padding: 8px; margin-bottom: 5px; background: var(--card-soft);
-    border: none; color: white; border-radius: 5px; text-align: left; cursor: pointer;
-}
-.goal-player-btn:hover { background: var(--accent1); color: black; }
+#timer-display { font-family: monospace; font-size: 24px; font-weight: bold; }
+.timer-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
 header{text-align:center;margin-bottom:20px;}
-.week-selector{text-align:center;margin-bottom:15px;}
-.week-selector button{ padding:6px 15px; margin:3px; border:1px solid var(--border); border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text); font-size: 12px;}
+.week-selector{text-align:center;margin-bottom:20px;}
+.week-selector button{ padding:8px 20px; margin:5px; border:1px solid var(--border); border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text); }
 .week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; }
 
-.tabs{display:flex;gap:5px;margin-bottom:20px;flex-wrap:wrap; justify-content: center;}
-.tab{ padding:8px 12px; border-radius:10px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; font-size: 12px;}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap; justify-content: center;}
+.tab{ padding:10px 20px; border-radius:10px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; }
 .tab.active{background:var(--accent2); color: white;}
 
 .day{display:none;}
 .day.active{display:block;}
-.day-card{ background:var(--card); padding:20px; border-radius:20px; border: 1px solid var(--border); }
+.day-card{ background:var(--card); padding:25px; border-radius:20px; border: 1px solid var(--border); }
 
-.block{ margin-bottom:15px; padding:12px; background: rgba(255,255,255,0.02); border-radius:12px; }
-.block h3{ margin-bottom:8px; color: var(--accent2); font-size: 11px; text-transform: uppercase; }
+.block{ margin-bottom:20px; padding:15px; background: rgba(255,255,255,0.02); border-radius:15px; }
+.block h3{ margin-bottom:10px; color: var(--accent2); font-size: 12px; text-transform: uppercase; }
 
-.task{ padding:6px; margin-bottom: 5px; background: var(--card-soft); border-radius: 8px; display:flex; align-items:center; gap:8px; }
-.task input{ background: transparent; border: 1px solid transparent; color: var(--text); padding: 2px; font-size: 13px;}
-.task .input-time{ width:35px; font-weight: bold; color: var(--accent1); text-align: center; }
-.task .input-name{ flex:1; }
+.task{ padding:8px; margin-bottom: 5px; background: var(--card-soft); border-radius: 8px; display:flex; align-items:center; gap:10px; }
+.task input{ background: transparent; border: 1px solid transparent; color: var(--text); padding: 4px; }
+.task .input-time{ width:45px; font-weight: bold; color: var(--accent1); text-align: center; }
+.task .input-name{ flex:1; font-size: 14px; }
 
-.notes-area { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; min-height: 60px; margin-top: 10px; font-size: 13px; }
+.notes-area { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; min-height: 80px; margin-top: 10px; }
 
-.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; margin-top: 15px; }
-.player{ background:var(--card-soft); padding:8px; border-radius:8px; font-size: 11px; display:flex; align-items:center; gap:8px; cursor: pointer; }
+.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top: 15px; }
+.player{ background:var(--card-soft); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:8px; cursor: pointer; }
 
-.footer-actions { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-.export-btn{ flex: 1; padding:10px; border:none; border-radius:8px; background:var(--accent3); color: #000; cursor:pointer; font-weight:bold; font-size: 11px; }
+.footer-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.export-btn{ flex: 1; padding:12px; border:none; border-radius:10px; background:var(--accent3); color: #000; cursor:pointer; font-weight:bold; }
 .save-btn { background: var(--accent1); }
 </style>
 </head>
 <body>
 
-<div id="goal-modal">
-    <h3 style="margin-bottom: 10px; color: var(--accent1);">¿Quién anotó el gol?</h3>
-    <div id="goal-players-list" style="max-height: 300px; overflow-y: auto;"></div>
-    <button onclick="closeGoalModal()" style="margin-top:10px; width:100%; padding:8px; background:var(--danger); border:none; color:white; border-radius:5px;">Cancelar</button>
-</div>
-
 <div id="timer-float">
     <div id="timer-display">00:00</div>
     <button class="timer-btn" onclick="toggleTimer()" id="t-start">▶</button>
     <button class="timer-btn" onclick="resetTimer()">🔄</button>
-    
-    <div class="score-control">
-        <span style="font-size: 10px; color: var(--accent1);">L</span>
-        <button class="btn-score" onclick="openGoalModal()">+</button>
-        <div class="score-num" id="score-home">0</div>
-        <button class="btn-score" onclick="changeScore('home', -1)">-</button>
-        <span style="color: var(--border)">|</span>
-        <div class="score-num" id="score-away">0</div>
-        <button class="btn-score" onclick="changeScore('away', 1)">+</button>
-        <button class="btn-score" onclick="changeScore('away', -1)">-</button>
-        <span style="font-size: 10px; color: var(--sub);">V</span>
-    </div>
 </div>
 
 <header>
@@ -114,49 +77,60 @@ header{text-align:center;margin-bottom:20px;}
     <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
     <button class="tab" onclick="showDay('martes',this)">Martes</button>
     <button class="tab" onclick="showDay('jueves',this)">Jueves</button>
-    <button class="tab" style="border: 1px solid var(--accent1);" onclick="showDay('competencia',this)">🏆 Partido</button>
+    <button class="tab" onclick="showDay('competencia',this)">🏆 Comp</button>
 </div>
 
 <div id="content"></div>
 
 <script>
 let currentWeek = 3;
-let timerInterval, seconds = 0, timerRunning = false;
-let scoreHome = 0, scoreAway = 0;
+let timerInterval;
+let seconds = 0;
+let timerRunning = false;
 
 const playerList = ["Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina","Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano","Roger Andrés","Jeronimo Blandón Bedoya","Juan Pablo Jaramillo Jaramillo","Miguel Ángel Ruiz Villegas","Isaac Manuel Ramírez Bolaño","Luis Said Andrade Hinestroza","Juan Miguel Ospina Villa","Alexis Posada Zabala","Dylan Esteban Tovar Montenegro","Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"];
 
-let appData = JSON.parse(localStorage.getItem('coachData_final')) || {
-    3: { 
+// Cargar datos guardados o iniciar nuevos
+let appData = JSON.parse(localStorage.getItem('coachData')) || {
+    3: { lunes: { inicial:[], central:[], final:[], notes:"", attendance:{} }, martes:{}, jueves:{}, competencia:{ rival:"", resultado:"", fecha:"", attendance:{} } },
+    4: { lunes: {}, martes: {}, jueves: {}, competencia: {} }
+};
+
+// Datos por defecto si están vacíos
+if(!appData[3].lunes.inicial.length) {
+    appData[3] = {
         lunes: { inicial:[{time:10,name:"Movilidad"},{time:10,name:"Pases"}], central:[{time:40,name:"Posesión"}], final:[{time:20,name:"Intermitente"}], notes:"", attendance:{} },
         martes: { inicial:[{time:10,name:"Cognitivo"}], central:[{time:30,name:"Fuerza"}], final:[{time:20,name:"Finalización"}], notes:"", attendance:{} },
         jueves: { inicial:[{time:15,name:"Velocidad"}], central:[{time:40,name:"Fútbol"}], final:[{time:10,name:"Estiramiento"}], notes:"", attendance:{} },
-        competencia: { rival:"Rival", resultado:"0-0", fecha:"2026-02-21", attendance:{}, goals: [] }
-    },
-    4: { lunes: {}, martes: {}, jueves: {}, competencia: { goals: [] } }
-};
+        competencia: { rival:"Rival", resultado:"0-0", fecha:"2026-02-21", attendance:{} }
+    };
+}
 
 function renderWeek(){
     const container=document.getElementById("content");
     container.innerHTML="";
+
     ["lunes","martes","jueves"].forEach(day=>{
         let dayData = appData[currentWeek][day];
-        if(!dayData.inicial) return;
-        container.innerHTML += `
+        let html=`
         <div class="day ${day==='lunes'?'active':''}" id="${day}">
             <div class="day-card">
-                <h2 style="color:var(--accent2); border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:15px;">${day.toUpperCase()}</h2>
-                ${renderBlock(day,"inicial","Bloque Inicial",dayData.inicial)}
-                ${renderBlock(day,"central","Bloque Central",dayData.central)}
-                ${renderBlock(day,"final","Bloque Final",dayData.final)}
-                <textarea class="notes-area" onchange="appData[currentWeek]['${day}'].notes=this.value" placeholder="Feedback táctico...">${dayData.notes || ""}</textarea>
+                <h2>${day.toUpperCase()} - S${currentWeek}</h2>
+                ${renderBlock(day,"inicial","Inicial",dayData.inicial)}
+                ${renderBlock(day,"central","Central",dayData.central)}
+                ${renderBlock(day,"final","Final",dayData.final)}
+                
+                <h3>📝 Notas de la Sesión</h3>
+                <textarea class="notes-area" onchange="appData[currentWeek]['${day}'].notes=this.value" placeholder="Escribe aquí novedades o feedback...">${dayData.notes || ""}</textarea>
+                
                 <div class="checklist" id="check-${day}"></div>
                 <div class="footer-actions">
-                    <button class="export-btn save-btn" onclick="saveToLocal()">💾 Guardar</button>
-                    <button class="export-btn" style="background:var(--accent2); color:white" onclick="exportFullWeek()">📊 Reporte Excel</button>
+                    <button class="export-btn save-btn" onclick="saveToLocal()">💾 Guardar Progreso</button>
+                    <button class="export-btn full-report-btn" onclick="exportFullWeek()">📊 Reporte Excel Semanal</button>
                 </div>
             </div>
         </div>`;
+        container.innerHTML+=html;
         generateChecklist(day);
     });
     renderComp();
@@ -170,85 +144,80 @@ function renderBlock(day,type,title,data){
         <div class="task">
             <input type="number" class="input-time" value="${task.time}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].time=this.value">
             <input type="text" class="input-name" value="${task.name}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].name=this.value">
-            <button style="background:none; border:none; color:var(--danger); cursor:pointer;" onclick="removeTask('${day}','${type}',${i})">×</button>
+            <button class="delete-btn" style="color:var(--danger)" onclick="removeTask('${day}','${type}',${i})">×</button>
         </div>`).join("")}
-        <button class="add-btn" onclick="addTask('${day}','${type}')">+ Tarea</button>
+        <button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir</button>
     </div>`;
 }
 
 function renderComp(){
     let c = appData[currentWeek].competencia;
-    let goalList = (c.goals || []).map(g => `<span style="display:inline-block; background:var(--accent1); color:black; padding:2px 8px; border-radius:10px; font-size:11px; margin:2px;">⚽ ${g.name} (${g.time}')</span>`).join("");
-    
-    document.getElementById("content").innerHTML += `
+    let html = `
     <div class="day" id="competencia">
         <div class="day-card">
-            <h2 style="color:var(--accent3)">🏆 INFORME DE PARTIDO</h2>
+            <h2>🏆 COMPETENCIA</h2>
             <div class="block">
-                <input type="text" class="notes-area" style="min-height:40px; margin-bottom:10px;" value="${c.rival}" onchange="appData[currentWeek].competencia.rival=this.value" placeholder="Nombre del Rival">
-                <div style="padding:10px; background:var(--bg); border-radius:8px; border:1px solid var(--border);">
-                    <div style="font-size:12px; color:var(--sub); margin-bottom:5px;">MARCADOR Y GOLEADORES:</div>
-                    <div style="font-size:24px; font-weight:bold; color:var(--accent3); text-align:center;">${c.resultado}</div>
-                    <div style="margin-top:10px;">${goalList}</div>
-                </div>
+                <input type="date" class="notes-area" style="min-height:40px" value="${c.fecha}" onchange="appData[currentWeek].competencia.fecha=this.value">
+                <input type="text" class="notes-area" style="min-height:40px" value="${c.rival}" onchange="appData[currentWeek].competencia.rival=this.value" placeholder="Rival">
+                <input type="text" class="notes-area" style="min-height:40px" value="${c.resultado}" onchange="appData[currentWeek].competencia.resultado=this.value" placeholder="Resultado">
             </div>
-            <h3>Convocatoria</h3>
             <div class="checklist" id="check-competencia"></div>
         </div>
     </div>`;
+    document.getElementById("content").innerHTML += html;
     generateChecklist("competencia");
 }
 
-/* LOGICA DE GOLES */
-function openGoalModal() {
-    const list = document.getElementById("goal-players-list");
-    list.innerHTML = "";
-    playerList.forEach(name => {
-        let btn = document.createElement("button");
-        btn.className = "goal-player-btn";
-        btn.innerText = name;
-        btn.onclick = () => registerGoal(name);
-        list.appendChild(btn);
-    });
-    document.getElementById("goal-modal").style.display = "block";
-}
-
-function closeGoalModal() { document.getElementById("goal-modal").style.display = "none"; }
-
-function registerGoal(playerName) {
-    changeScore('home', 1);
-    let time = document.getElementById("timer-display").innerText;
-    if(!appData[currentWeek].competencia.goals) appData[currentWeek].competencia.goals = [];
-    appData[currentWeek].competencia.goals.push({ name: playerName, time: time });
-    closeGoalModal();
-    renderWeek();
-}
-
-function changeScore(team, val) {
-    if(team === 'home') scoreHome = Math.max(0, scoreHome + val);
-    else scoreAway = Math.max(0, scoreAway + val);
-    document.getElementById("score-home").innerText = scoreHome;
-    document.getElementById("score-away").innerText = scoreAway;
-    appData[currentWeek].competencia.resultado = `${scoreHome} - ${scoreAway}`;
-    renderWeek();
-}
-
-/* FUNCIONES AUXILIARES */
 function addTask(day,type){ appData[currentWeek][day][type].push({time:10,name:"Nuevo"}); renderWeek(); }
 function removeTask(day,type,i){ appData[currentWeek][day][type].splice(i,1); renderWeek(); }
+
 function generateChecklist(day){
     const container=document.getElementById("check-"+day);
-    if(!container) return;
     playerList.forEach((name,i)=>{
         let div=document.createElement("div");
         div.className="player";
-        let isChecked = appData[currentWeek][day].attendance && appData[currentWeek][day].attendance[i] ? "checked" : "";
+        let isChecked = appData[currentWeek][day].attendance[i] ? "checked" : "";
         div.innerHTML=`<input type="checkbox" ${isChecked} onchange="appData[currentWeek]['${day}'].attendance[${i}]=this.checked">
         <label>${name}</label>`;
         container.appendChild(div);
     });
 }
-function saveToLocal(){ localStorage.setItem('coachData_final', JSON.stringify(appData)); alert("Datos guardados."); }
+
+function saveToLocal(){
+    localStorage.setItem('coachData', JSON.stringify(appData));
+    alert("¡Datos guardados localmente!");
+}
+
+function exportFullWeek(){
+    let c = appData[currentWeek].competencia;
+    let csv = "\ufeffREPORTE SEMANAL - CD ESTUDIANTIL\n";
+    csv += `Rival: ${c.rival} | Resultado: ${c.resultado}\n\n`;
+    csv += "Jugador,Lunes,Martes,Jueves,Comp,Total\n";
+
+    playerList.forEach((name, i) => {
+        let l = appData[currentWeek].lunes.attendance[i] ? "P" : "A";
+        let m = appData[currentWeek].martes.attendance[i] ? "P" : "A";
+        let j = appData[currentWeek].jueves.attendance[i] ? "P" : "A";
+        let comp = appData[currentWeek].competencia.attendance[i] ? "P" : "A";
+        let total = [l,m,j,comp].filter(x => x === "P").length;
+        csv += `${name},${l},${m},${j},${comp},${total}\n`;
+    });
+
+    csv += "\nRESUMEN DE TRABAJO:\n";
+    ["lunes","martes","jueves"].forEach(d => {
+        let tasks = [...appData[currentWeek][d].inicial, ...appData[currentWeek][d].central, ...appData[currentWeek][d].final];
+        csv += `${d.toUpperCase()}: ${tasks.map(t => t.name).join(" - ")}\n`;
+        csv += `NOTAS: ${appData[currentWeek][d].notes}\n`;
+    });
+
+    let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+    let link=document.createElement("a");
+    link.href=URL.createObjectURL(blob);
+    link.download=`Reporte_Semana${currentWeek}.csv`;
+    link.click();
+}
+
+// TIMER LOGIC
 function toggleTimer(){
     if(!timerRunning){
         timerInterval = setInterval(() => {
@@ -258,10 +227,14 @@ function toggleTimer(){
             document.getElementById("timer-display").innerText = `${m}:${s}`;
         }, 1000);
         document.getElementById("t-start").innerText = "⏸";
-    } else { clearInterval(timerInterval); document.getElementById("t-start").innerText = "▶"; }
+    } else {
+        clearInterval(timerInterval);
+        document.getElementById("t-start").innerText = "▶";
+    }
     timerRunning = !timerRunning;
 }
 function resetTimer(){ clearInterval(timerInterval); seconds=0; timerRunning=false; document.getElementById("timer-display").innerText="00:00"; document.getElementById("t-start").innerText="▶"; }
+
 function showDay(id,btn){
     document.querySelectorAll('.day').forEach(d=>d.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -269,22 +242,7 @@ function showDay(id,btn){
     btn.classList.add('active');
 }
 function changeWeek(w,b){ currentWeek=w; renderWeek(); }
-function exportFullWeek(){
-    let c = appData[currentWeek].competencia;
-    let csv = "\ufeffREPORTE SEMANAL CD ESTUDIANTIL\n";
-    csv += `RESULTADO: ${c.resultado} vs ${c.rival}\n`;
-    csv += `GOLEADORES: ${(c.goals || []).map(g=>g.name+" ("+g.time+")").join(" | ")}\n\n`;
-    csv += "Jugador,Asistencias Totales\n";
-    playerList.forEach((name, i) => {
-        let total = [appData[currentWeek].lunes.attendance[i], appData[currentWeek].martes.attendance[i], appData[currentWeek].jueves.attendance[i], appData[currentWeek].competencia.attendance[i]].filter(x=>x).length;
-        csv += `${name},${total}\n`;
-    });
-    let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-    let link=document.createElement("a");
-    link.href=URL.createObjectURL(blob);
-    link.download=`Reporte_Final_S${currentWeek}.csv`;
-    link.click();
-}
+
 renderWeek();
 </script>
 </body>
