@@ -3,245 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Coach Dashboard - CD Estudiantil</title>
+<title>Dashboard Pro - CD Estudiantil</title>
 
 <style>
 :root{
---bg:#0f172a; --card:#1e293b; --card-soft:#273449; --text:#f1f5f9;
---sub:#94a3b8; --accent1:#22c55e; --accent2:#3b82f6; --accent3:#f59e0b;
---danger:#ef4444; --border:#334155; --input-focus:#38bdf8;
+--bg:#0f172a;
+--card:#1e293b;
+--card-soft:#273449;
+--text:#f1f5f9;
+--sub:#94a3b8;
+--accent1:#22c55e;
+--accent2:#3b82f6;
+--accent3:#f59e0b;
+--danger:#ef4444;
+--border:#334155;
+--input-focus:#38bdf8;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family: 'Segoe UI', system-ui, sans-serif;}
-body{background:var(--bg);color:var(--text);padding:20px; line-height: 1.5;}
+body{background:var(--bg);color:var(--text);padding:30px; line-height: 1.5;}
 
-/* --- TIMER FLOATING --- */
-#timer-float {
-    position: fixed; bottom: 20px; right: 20px; background: var(--accent2);
-    color: white; padding: 15px 25px; border-radius: 50px; z-index: 1000;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 15px;
-}
-#timer-display { font-family: monospace; font-size: 24px; font-weight: bold; }
-.timer-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+header{text-align:center;margin-bottom:30px;}
+header h1{font-size:28px;margin-bottom:5px; letter-spacing: -0.5px;}
 
-header{text-align:center;margin-bottom:20px;}
 .week-selector{text-align:center;margin-bottom:20px;}
-.week-selector button{ padding:8px 20px; margin:5px; border:1px solid var(--border); border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text); }
-.week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; }
+.week-selector button{
+padding:8px 20px; margin:5px; border:1px solid var(--border);
+border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text);
+}
+.week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; border-color: var(--accent1); }
 
-.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap; justify-content: center;}
-.tab{ padding:10px 20px; border-radius:10px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; }
-.tab.active{background:var(--accent2); color: white;}
+.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap; justify-content: center;}
+.tab{ padding:10px 24px; border-radius:10px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; }
+.tab.active{background:var(--accent2); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);}
 
 .day{display:none;}
-.day.active{display:block;}
-.day-card{ background:var(--card); padding:25px; border-radius:20px; border: 1px solid var(--border); }
+.day.active{display:block; animation: fadeIn 0.3s ease;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.block{ margin-bottom:20px; padding:15px; background: rgba(255,255,255,0.02); border-radius:15px; }
-.block h3{ margin-bottom:10px; color: var(--accent2); font-size: 12px; text-transform: uppercase; }
+.day-card{ background:var(--card); padding:30px; border-radius:20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-.task{ padding:8px; margin-bottom: 5px; background: var(--card-soft); border-radius: 8px; display:flex; align-items:center; gap:10px; }
-.task input{ background: transparent; border: 1px solid transparent; color: var(--text); padding: 4px; }
+.block{ margin-bottom:25px; padding:20px; background: rgba(255,255,255,0.02); border-radius:15px; border: 1px solid rgba(255,255,255,0.05); }
+.block h3{ margin-bottom:15px; color: var(--accent2); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+
+.task{
+padding:8px 12px; margin-bottom: 8px; background: var(--card-soft);
+border-radius: 8px; display:flex; align-items:center; gap:10px;
+}
+.task input{ background: transparent; border: 1px solid transparent; color: var(--text); padding: 4px; border-radius: 4px; }
+.task input:focus{ outline: none; background: var(--bg); border-color: var(--input-focus); }
 .task .input-time{ width:45px; font-weight: bold; color: var(--accent1); text-align: center; }
 .task .input-name{ flex:1; font-size: 14px; }
 
-.notes-area { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; min-height: 80px; margin-top: 10px; }
+.delete-btn{
+background: none; border: none; color: var(--sub); cursor: pointer;
+font-size: 18px; padding: 0 5px; transition: 0.2s;
+}
+.delete-btn:hover{ color: var(--danger); }
 
-.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top: 15px; }
-.player{ background:var(--card-soft); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:8px; cursor: pointer; }
+.add-btn{
+margin-top:5px; padding:6px 12px; border: 1px dashed var(--accent2);
+border-radius:8px; background: transparent; color: var(--accent2);
+cursor:pointer; font-size: 12px;
+}
 
-.footer-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-.export-btn{ flex: 1; padding:12px; border:none; border-radius:10px; background:var(--accent3); color: #000; cursor:pointer; font-weight:bold; }
-.save-btn { background: var(--accent1); }
+.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; margin-top: 15px; }
+.player{ background:var(--card-soft); padding:10px; border-radius:10px; font-size:13px; display:flex; align-items:center; gap:10px; cursor: pointer; }
+.player input{ accent-color: var(--accent1); width: 17px; height: 17px; }
+
+.progress-container{margin:25px 0;}
+.progress-label{ display:flex; justify-content:space-between; font-size: 13px; margin-bottom:8px; color: var(--sub); }
+.progress-bar{ height:8px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
+.progress{ height:100%; background: var(--accent1); width:0%; transition:0.5s; }
+
+.footer-actions { display: flex; gap: 10px; margin-top: 30px; }
+.export-btn{
+flex: 1; padding:14px; border:none; border-radius:12px;
+background:var(--accent3); color: #000; cursor:pointer;
+font-weight:bold; text-transform: uppercase;
+}
+.full-report-btn { background: #f1f5f9; color: #0f172a; }
 </style>
 </head>
+
 <body>
 
-<div id="timer-float">
-    <div id="timer-display">00:00</div>
-    <button class="timer-btn" onclick="toggleTimer()" id="t-start">▶</button>
-    <button class="timer-btn" onclick="resetTimer()">🔄</button>
-</div>
-
 <header>
-    <h1>⚽ CD Estudiantil</h1>
-    <p>Sub 14 (2012) · DT: Jose Antonio Mazo</p>
+<h1>⚽ CD Estudiantil</h1>
+<p>Sub 14 (2012) · DT: Jose Antonio Mazo</p>
 </header>
 
 <div class="week-selector">
-    <button class="active" onclick="changeWeek(3,this)">Semana 3</button>
-    <button onclick="changeWeek(4,this)">Semana 4</button>
+<button class="active" onclick="changeWeek(3,this)">Semana 3</button>
+<button onclick="changeWeek(4,this)">Semana 4</button>
 </div>
 
 <div class="tabs">
-    <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
-    <button class="tab" onclick="showDay('martes',this)">Martes</button>
-    <button class="tab" onclick="showDay('jueves',this)">Jueves</button>
-    <button class="tab" onclick="showDay('competencia',this)">🏆 Comp</button>
+<button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
+<button class="tab" onclick="showDay('martes',this)">Martes</button>
+<button class="tab" onclick="showDay('jueves',this)">Jueves</button>
 </div>
 
 <div id="content"></div>
 
 <script>
 let currentWeek = 3;
-let timerInterval;
-let seconds = 0;
-let timerRunning = false;
+const playerList = [
+"Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina",
+"Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano",
+"Roger Andrés","Jeronimo Blandón Bedoya","Juan Pablo Jaramillo Jaramillo",
+"Miguel Ángel Ruiz Villegas","Isaac Manuel Ramírez Bolaño",
+"Luis Said Andrade Hinestroza","Juan Miguel Ospina Villa",
+"Alexis Posada Zabala","Dylan Esteban Tovar Montenegro",
+"Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"
+];
 
-const playerList = ["Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina","Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano","Roger Andrés","Jeronimo Blandón Bedoya","Juan Pablo Jaramillo Jaramillo","Miguel Ángel Ruiz Villegas","Isaac Manuel Ramírez Bolaño","Luis Said Andrade Hinestroza","Juan Miguel Ospina Villa","Alexis Posada Zabala","Dylan Esteban Tovar Montenegro","Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"];
+// Objeto para guardar asistencia: { semana: { dia: { indiceJugador: true/false } } }
+let attendanceData = { 3: { lunes: {}, martes: {}, jueves: {} }, 4: { lunes: {}, martes: {}, jueves: {} } };
 
-// Cargar datos guardados o iniciar nuevos
-let appData = JSON.parse(localStorage.getItem('coachData')) || {
-    3: { lunes: { inicial:[], central:[], final:[], notes:"", attendance:{} }, martes:{}, jueves:{}, competencia:{ rival:"", resultado:"", fecha:"", attendance:{} } },
-    4: { lunes: {}, martes: {}, jueves: {}, competencia: {} }
+const plans = {
+3:{
+lunes:{
+inicial:[{time:10,name:"Movilidad articular"},{time:10,name:"Secuencia pases"},{time:10,name:"Rondo 4v1"}],
+central:[{time:20,name:"Posesión 6v6+8"},{time:20,name:"Juego condicionado"}],
+final:[{time:20,name:"Aeróbico"}]
+},
+martes:{
+inicial:[{time:10,name:"Activación cognitiva"},{time:10,name:"Preventivos"}],
+central:[{time:20,name:"Circuito fuerza"},{time:15,name:"Rechazos"}],
+final:[{time:20,name:"Finalización"}]
+},
+jueves:{
+inicial:[{time:10,name:"Movilidad"},{time:10,name:"Aceleraciones"}],
+central:[{time:20,name:"Duelos"},{time:40,name:"Fútbol"}],
+final:[{time:10,name:"Estiramientos"}]
+}
+},
+4:{ lunes:{inicial:[],central:[],final:[]}, martes:{inicial:[],central:[],final:[]}, jueves:{inicial:[],central:[],final:[]} }
 };
 
-// Datos por defecto si están vacíos
-if(!appData[3].lunes.inicial.length) {
-    appData[3] = {
-        lunes: { inicial:[{time:10,name:"Movilidad"},{time:10,name:"Pases"}], central:[{time:40,name:"Posesión"}], final:[{time:20,name:"Intermitente"}], notes:"", attendance:{} },
-        martes: { inicial:[{time:10,name:"Cognitivo"}], central:[{time:30,name:"Fuerza"}], final:[{time:20,name:"Finalización"}], notes:"", attendance:{} },
-        jueves: { inicial:[{time:15,name:"Velocidad"}], central:[{time:40,name:"Fútbol"}], final:[{time:10,name:"Estiramiento"}], notes:"", attendance:{} },
-        competencia: { rival:"Rival", resultado:"0-0", fecha:"2026-02-21", attendance:{} }
-    };
-}
-
 function renderWeek(){
-    const container=document.getElementById("content");
-    container.innerHTML="";
+const container=document.getElementById("content");
+container.innerHTML="";
 
-    ["lunes","martes","jueves"].forEach(day=>{
-        let dayData = appData[currentWeek][day];
-        let html=`
-        <div class="day ${day==='lunes'?'active':''}" id="${day}">
-            <div class="day-card">
-                <h2>${day.toUpperCase()} - S${currentWeek}</h2>
-                ${renderBlock(day,"inicial","Inicial",dayData.inicial)}
-                ${renderBlock(day,"central","Central",dayData.central)}
-                ${renderBlock(day,"final","Final",dayData.final)}
-                
-                <h3>📝 Notas de la Sesión</h3>
-                <textarea class="notes-area" onchange="appData[currentWeek]['${day}'].notes=this.value" placeholder="Escribe aquí novedades o feedback...">${dayData.notes || ""}</textarea>
-                
-                <div class="checklist" id="check-${day}"></div>
-                <div class="footer-actions">
-                    <button class="export-btn save-btn" onclick="saveToLocal()">💾 Guardar Progreso</button>
-                    <button class="export-btn full-report-btn" onclick="exportFullWeek()">📊 Reporte Excel Semanal</button>
-                </div>
-            </div>
-        </div>`;
-        container.innerHTML+=html;
-        generateChecklist(day);
-    });
-    renderComp();
+["lunes","martes","jueves"].forEach(day=>{
+let data=plans[currentWeek][day];
+let html=`
+<div class="day ${day==='lunes'?'active':''}" id="${day}">
+<div class="day-card">
+<h2>${day.toUpperCase()} - SEMANA ${currentWeek}</h2><br>
+
+${renderBlock(day,"inicial","Parte Inicial",data.inicial)}
+${renderBlock(day,"central","Parte Central",data.central)}
+${renderBlock(day,"final","Parte Final",data.final)}
+
+<div class="progress-container">
+<div class="progress-label"><span>Asistencia</span><span id="stat-${day}">0 / 18</span></div>
+<div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
+</div>
+
+<div class="checklist" id="check-${day}"></div>
+<div class="footer-actions">
+    <button class="export-btn" onclick="exportDay('${day}')">Exportar Día</button>
+    <button class="export-btn full-report-btn" onclick="exportFullWeek()">Excel Reporte Semanal</button>
+</div>
+</div></div>`;
+container.innerHTML+=html;
+generateChecklist(day);
+});
 }
 
 function renderBlock(day,type,title,data){
-    return `
-    <div class="block">
-        <h3>${title}</h3>
-        ${data.map((task,i)=>`
-        <div class="task">
-            <input type="number" class="input-time" value="${task.time}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].time=this.value">
-            <input type="text" class="input-name" value="${task.name}" onchange="appData[currentWeek]['${day}']['${type}'][${i}].name=this.value">
-            <button class="delete-btn" style="color:var(--danger)" onclick="removeTask('${day}','${type}',${i})">×</button>
-        </div>`).join("")}
-        <button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir</button>
-    </div>`;
+return `
+<div class="block">
+<h3>${title}</h3>
+<div id="tasks-${day}-${type}">
+${data.map((task,i)=>`
+<div class="task" id="task-${day}-${type}-${i}">
+<input type="number" class="input-time" value="${task.time}" onchange="updateTask(${i},'${day}','${type}','time',this.value)">
+<input type="text" class="input-name" value="${task.name}" onchange="updateTask(${i},'${day}','${type}','name',this.value)">
+<button class="delete-btn" onclick="removeTask('${day}','${type}',${i})">×</button>
+</div>`).join("")}
+</div>
+<button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir</button>
+</div>`;
 }
 
-function renderComp(){
-    let c = appData[currentWeek].competencia;
-    let html = `
-    <div class="day" id="competencia">
-        <div class="day-card">
-            <h2>🏆 COMPETENCIA</h2>
-            <div class="block">
-                <input type="date" class="notes-area" style="min-height:40px" value="${c.fecha}" onchange="appData[currentWeek].competencia.fecha=this.value">
-                <input type="text" class="notes-area" style="min-height:40px" value="${c.rival}" onchange="appData[currentWeek].competencia.rival=this.value" placeholder="Rival">
-                <input type="text" class="notes-area" style="min-height:40px" value="${c.resultado}" onchange="appData[currentWeek].competencia.resultado=this.value" placeholder="Resultado">
-            </div>
-            <div class="checklist" id="check-competencia"></div>
-        </div>
-    </div>`;
-    document.getElementById("content").innerHTML += html;
-    generateChecklist("competencia");
+function updateTask(i,day,type,field,val){ plans[currentWeek][day][type][i][field] = val; }
+
+function addTask(day,type){
+plans[currentWeek][day][type].push({time:10,name:"Nueva actividad"});
+renderWeek();
 }
 
-function addTask(day,type){ appData[currentWeek][day][type].push({time:10,name:"Nuevo"}); renderWeek(); }
-function removeTask(day,type,i){ appData[currentWeek][day][type].splice(i,1); renderWeek(); }
+function removeTask(day,type,index){
+plans[currentWeek][day][type].splice(index, 1);
+renderWeek();
+}
 
 function generateChecklist(day){
-    const container=document.getElementById("check-"+day);
-    playerList.forEach((name,i)=>{
-        let div=document.createElement("div");
-        div.className="player";
-        let isChecked = appData[currentWeek][day].attendance[i] ? "checked" : "";
-        div.innerHTML=`<input type="checkbox" ${isChecked} onchange="appData[currentWeek]['${day}'].attendance[${i}]=this.checked">
-        <label>${name}</label>`;
-        container.appendChild(div);
-    });
+const container=document.getElementById("check-"+day);
+playerList.forEach((name,i)=>{
+let div=document.createElement("div");
+div.className="player";
+let isChecked = attendanceData[currentWeek][day][i] ? "checked" : "";
+div.innerHTML=`<input type="checkbox" ${isChecked} onchange="toggleAttend('${day}',${i},this)">
+<label>${i+1}. ${name}</label>`;
+container.appendChild(div);
+});
+updateProgress(day);
 }
 
-function saveToLocal(){
-    localStorage.setItem('coachData', JSON.stringify(appData));
-    alert("¡Datos guardados localmente!");
+function toggleAttend(day, playerIdx, el){
+attendanceData[currentWeek][day][playerIdx] = el.checked;
+updateProgress(day);
 }
 
+function updateProgress(day){
+let checked = Object.values(attendanceData[currentWeek][day]).filter(v => v).length;
+document.getElementById("prog-"+day).style.width=(checked/playerList.length)*100+"%";
+document.getElementById("stat-"+day).innerText=`${checked} / ${playerList.length}`;
+}
+
+// Exportar solo el día actual
+function exportDay(day){
+let csv = "\ufeffJugador,Asistencia\n";
+playerList.forEach((name, i) => {
+    let status = attendanceData[currentWeek][day][i] ? "PRESENTE" : "AUSENTE";
+    csv += `${name},${status}\n`;
+});
+downloadCSV(csv, `Asistencia_${day}_Semana${currentWeek}.csv`);
+}
+
+// NUEVA FUNCIÓN: Exportar toda la semana en un solo archivo
 function exportFullWeek(){
-    let c = appData[currentWeek].competencia;
-    let csv = "\ufeffREPORTE SEMANAL - CD ESTUDIANTIL\n";
-    csv += `Rival: ${c.rival} | Resultado: ${c.resultado}\n\n`;
-    csv += "Jugador,Lunes,Martes,Jueves,Comp,Total\n";
+let csv = "\ufeffREPORTE SEMANAL - SEMANA " + currentWeek + "\n";
+csv += "Jugador,Lunes,Martes,Jueves,Total Asistencias\n";
 
-    playerList.forEach((name, i) => {
-        let l = appData[currentWeek].lunes.attendance[i] ? "P" : "A";
-        let m = appData[currentWeek].martes.attendance[i] ? "P" : "A";
-        let j = appData[currentWeek].jueves.attendance[i] ? "P" : "A";
-        let comp = appData[currentWeek].competencia.attendance[i] ? "P" : "A";
-        let total = [l,m,j,comp].filter(x => x === "P").length;
-        csv += `${name},${l},${m},${j},${comp},${total}\n`;
-    });
+playerList.forEach((name, i) => {
+    let l = attendanceData[currentWeek].lunes[i] ? "P" : "A";
+    let m = attendanceData[currentWeek].martes[i] ? "P" : "A";
+    let j = attendanceData[currentWeek].jueves[i] ? "P" : "A";
+    let total = [l,m,j].filter(x => x === "P").length;
+    csv += `${name},${l},${m},${j},${total}\n`;
+});
 
-    csv += "\nRESUMEN DE TRABAJO:\n";
-    ["lunes","martes","jueves"].forEach(d => {
-        let tasks = [...appData[currentWeek][d].inicial, ...appData[currentWeek][d].central, ...appData[currentWeek][d].final];
-        csv += `${d.toUpperCase()}: ${tasks.map(t => t.name).join(" - ")}\n`;
-        csv += `NOTAS: ${appData[currentWeek][d].notes}\n`;
-    });
-
-    let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-    let link=document.createElement("a");
-    link.href=URL.createObjectURL(blob);
-    link.download=`Reporte_Semana${currentWeek}.csv`;
-    link.click();
+downloadCSV(csv, `Reporte_General_Semana${currentWeek}.csv`);
 }
 
-// TIMER LOGIC
-function toggleTimer(){
-    if(!timerRunning){
-        timerInterval = setInterval(() => {
-            seconds++;
-            let m = Math.floor(seconds/60).toString().padStart(2,'0');
-            let s = (seconds%60).toString().padStart(2,'0');
-            document.getElementById("timer-display").innerText = `${m}:${s}`;
-        }, 1000);
-        document.getElementById("t-start").innerText = "⏸";
-    } else {
-        clearInterval(timerInterval);
-        document.getElementById("t-start").innerText = "▶";
-    }
-    timerRunning = !timerRunning;
+function downloadCSV(csv, filename){
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+let link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download=filename;
+link.click();
 }
-function resetTimer(){ clearInterval(timerInterval); seconds=0; timerRunning=false; document.getElementById("timer-display").innerText="00:00"; document.getElementById("t-start").innerText="▶"; }
 
 function showDay(id,btn){
-    document.querySelectorAll('.day').forEach(d=>d.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
+document.querySelectorAll('.day').forEach(d=>d.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+btn.classList.add('active');
 }
-function changeWeek(w,b){ currentWeek=w; renderWeek(); }
+
+function changeWeek(week,btn){
+currentWeek=week;
+document.querySelectorAll('.week-selector button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+renderWeek();
+}
 
 renderWeek();
 </script>
