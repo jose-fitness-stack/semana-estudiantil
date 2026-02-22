@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Entrenamiento - CD Estudiantil</title>
+
+<style>
+:root{
+--bg:#0f172a;
+--card:#1e293b;
+--card-soft:#273449;
+--text:#f1f5f9;
+--sub:#94a3b8;
+--accent1:#22c55e;
+--accent2:#3b82f6;
+--accent3:#f59e0b;
+--border:#334155;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
+
+body{background:var(--bg);color:var(--text);padding:30px;}
+
+header{
+text-align:center;
+margin-bottom:30px;
+}
+
+header h1{
+font-size:28px;
+margin-bottom:5px;
+}
+
+header p{
+color:var(--sub);
+}
+
+.info-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:30px;
+}
+
+.info-card{
+background:var(--card);
+padding:15px;
+border-radius:12px;
+border:1px solid var(--border);
+}
+
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.tab{
+padding:10px 18px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+background:var(--card-soft);
+color:var(--text);
+transition:.3s;
+}
+
+.tab.active{
+background:var(--accent1);
+color:#000;
+font-weight:bold;
+}
+
+.day{
+display:none;
+}
+
+.day.active{
+display:block;
+}
+
+.day-card{
+background:var(--card);
+padding:25px;
+border-radius:16px;
+margin-bottom:25px;
+border:1px solid var(--border);
+}
+
+.day-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.block{
+margin-bottom:20px;
+padding:15px;
+background:var(--card-soft);
+border-radius:12px;
+}
+
+.block h3{
+margin-bottom:10px;
+color:var(--accent2);
+}
+
+.task{
+padding:6px 0;
+border-bottom:1px solid var(--border);
+font-size:14px;
+}
+
+/* Mejora en la cuadrícula de jugadores */
+.checklist{
+margin-top:20px;
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+gap:10px;
+}
+
+.player{
+background:var(--card-soft);
+padding:10px;
+border-radius:8px;
+font-size:13px;
+display:flex;
+align-items:center;
+gap:10px;
+border: 1px solid transparent;
+transition: 0.2s;
+}
+
+.player:hover {
+    border-color: var(--accent2);
+}
+
+.player input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.progress-bar{
+height:12px;
+background:var(--card-soft);
+border-radius:20px;
+overflow:hidden;
+}
+
+.progress{
+height:100%;
+background:var(--accent1);
+width:0%;
+transition:.4s ease-out;
+box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+.summary{
+background:var(--card);
+padding:20px;
+border-radius:16px;
+border:1px solid var(--border);
+}
+
+@media(max-width:600px){
+.day-header{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>⚽ CD Estudiantil</h1>
+<p>Sub 14 (2012) · Semana 3 · DT: Jose Antonio Mazo</p>
+</header>
+
+<div class="info-grid">
+<div class="info-card"><strong>Objetivo</strong><br>Desarrollar identidad de juego y optimizar rendimiento físico-táctico.</div>
+<div class="info-card"><strong>Deportistas</strong><br>18 inscritos</div>
+<div class="info-card"><strong>Minutos Totales</strong><br>280 minutos</div>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
+<button class="tab" onclick="showDay('martes',this)">Martes</button>
+<button class="tab" onclick="showDay('jueves',this)">Jueves</button>
+</div>
+
+<div id="lunes" class="day active">
+<div class="day-card">
+<div class="day-header">
+<h2>🟢 Lunes</h2>
+<span>90 minutos · Aeróbico / Técnico / Espacios Amplios</span>
+</div>
+
+<div class="block">
+<h3>Parte Inicial</h3>
+<div class="task">10' Movilidad articular + desplazamiento</div>
+<div class="task">10' Secuencia de pases apoyo + tercer hombre</div>
+<div class="task">10' Rondo 4v1 / 5v2 progresivo</div>
+</div>
+
+<div class="block">
+<h3>Parte Central</h3>
+<div class="task">20' Posesión 6v6+8 (espacio grande)</div>
+<div class="task">20' Juego condicionado 10v10 (3 carriles)</div>
+</div>
+
+<div class="block">
+<h3>Parte Final</h3>
+<div class="task">20' Trabajo aeróbico intermitente</div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-label">
+        <span>✔ Asistencia y Cumplimiento</span>
+        <span id="stat-lunes">0 / 18</span>
+    </div>
+    <div class="progress-bar"><div class="progress" id="prog-lunes"></div></div>
+</div>
+<div class="checklist" id="check-lunes"></div>
+</div>
+</div>
+
+<div id="martes" class="day">
+<div class="day-card">
+<div class="day-header">
+<h2>🔵 Martes</h2>
+<span>90 minutos · Fuerza / Espacios Cortos</span>
+</div>
+
+<div class="block">
+<h3>Parte Inicial</h3>
+<div class="task">10' Activación cognitiva</div>
+<div class="task">10' Ejercicios preventivos</div>
+</div>
+
+<div class="block">
+<h3>Parte Central</h3>
+<div class="task">20' Circuito fuerza</div>
+<div class="task">15' Rechazos orientados</div>
+<div class="task">15' Conservación con comodines</div>
+</div>
+
+<div class="block">
+<h3>Parte Final</h3>
+<div class="task">20' Secuencia pases con finalización</div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-label">
+        <span>✔ Asistencia y Cumplimiento</span>
+        <span id="stat-martes">0 / 18</span>
+    </div>
+    <div class="progress-bar"><div class="progress" id="prog-martes"></div></div>
+</div>
+<div class="checklist" id="check-martes"></div>
+</div>
+</div>
+
+<div id="jueves" class="day">
+<div class="day-card">
+<div class="day-header">
+<h2>🟡 Jueves</h2>
+<span>100 minutos · Preparación Competencia</span>
+</div>
+
+<div class="block">
+<h3>Parte Inicial</h3>
+<div class="task">10' Movilidad + desplazamiento</div>
+<div class="task">10' Aceleraciones / desaceleraciones</div>
+<div class="task">10' Técnica de carrera</div>
+</div>
+
+<div class="block">
+<h3>Parte Central</h3>
+<div class="task">20' Duelos 1v1 a 2v2</div>
+<div class="task">40' Fútbol alta intensidad (4x8')</div>
+</div>
+
+<div class="block">
+<h3>Parte Final</h3>
+<div class="task">10' Estiramientos estáticos</div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-label">
+        <span>✔ Asistencia y Cumplimiento</span>
+        <span id="stat-jueves">0 / 18</span>
+    </div>
+    <div class="progress-bar"><div class="progress" id="prog-jueves"></div></div>
+</div>
+<div class="checklist" id="check-jueves"></div>
+</div>
+</div>
+
+<div class="summary">
+<h2>📊 Resumen Semanal</h2>
+<p>Total carga semanal: <strong>280 minutos</strong></p>
+<p>Enfoque: Identidad de juego + desarrollo físico-táctico.</p>
+</div>
+
+<script>
+// Lista oficial de deportistas
+const playerList = [
+    "Juan José Gálvez Rodríguez",
+    "Luis Angel Quintero Torres",
+    "Nicolás Cadena Molina",
+    "Tomás Ruiz Osorio",
+    "Juan José Ortiz",
+    "Nicolas Tamayo Olano",
+    "Roger Andrés",
+    "Jeronimo Blandón Bedoya",
+    "Juan Pablo Jaramillo Jaramillo",
+    "Miguel Ángel Ruiz Villegas",
+    "Isaac Manuel Ramírez Bolaño",
+    "Luis Said Andrade Hinestroza",
+    "Juan Miguel Ospina Villa",
+    "Alexis Posada Zabala",
+    "Dylan Esteban Tovar Montenegro",
+    "Emanuel Aristizabal",
+    "Matías Díaz David",
+    "Kevin Vanegas Cano"
+];
+
+function generateChecklist(day){
+    const container = document.getElementById("check-"+day);
+    playerList.forEach((name, index) => {
+        let div = document.createElement("div");
+        div.className = "player";
+        div.innerHTML = `
+            <input type="checkbox" id="${day}-p${index}" onchange="updateProgress('${day}')"> 
+            <label for="${day}-p${index}">${index + 1}. ${name}</label>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function updateProgress(day){
+    const checks = document.querySelectorAll(`#check-${day} input`);
+    let checked = 0;
+    checks.forEach(c => { if(c.checked) checked++; });
+    
+    let percent = (checked / checks.length) * 100;
+    document.getElementById("prog-" + day).style.width = percent + "%";
+    document.getElementById("stat-" + day).innerText = `${checked} / ${checks.length}`;
+}
+
+// Inicializar listas
+["lunes","martes","jueves"].forEach(generateChecklist);
+
+function showDay(id, btn){
+    document.querySelectorAll('.day').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
