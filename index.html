@@ -3,162 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Entrenamiento - CD Estudiantil</title>
+<title>Pro Coach Dashboard - CD Estudiantil</title>
 
 <style>
 :root{
---bg:#0f172a;
---card:#1e293b;
---card-soft:#273449;
---text:#f1f5f9;
---sub:#94a3b8;
---accent1:#22c55e;
---accent2:#3b82f6;
---accent3:#f59e0b;
+--bg:#0f172a; /* Fondo pizarra profundo */
+--card:#1e293b; /* Azul noche para tarjetas */
+--card-soft:#273449; /* Para inputs y hovers */
+--text:#f8fafc; /* Blanco humo */
+--sub:#94a3b8; /* Gris azulado */
+--accent1:#22c55e; /* Verde éxito */
+--accent2:#3b82f6; /* Azul deportivo */
+--accent3:#f59e0b; /* Ambar para reportes */
+--danger:#f43f5e; /* Rojo coral para eliminar */
 --border:#334155;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui;}
-body{background:var(--bg);color:var(--text);padding:30px;}
+*{box-sizing:border-box;margin:0;padding:0;font-family: 'Inter', system-ui, sans-serif;}
+body{background:var(--bg);color:var(--text);padding:20px; padding-bottom: 120px;}
 
 header{text-align:center;margin-bottom:30px;}
-header h1{font-size:28px;margin-bottom:5px;}
-header p{color:var(--sub);}
+header h1{font-size:26px; letter-spacing: -0.5px;}
+header p{color:var(--sub); font-size: 14px;}
 
 .week-selector{text-align:center;margin-bottom:20px;}
 .week-selector button{
-padding:8px 16px;
-margin:5px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:var(--card-soft);
-color:var(--text);
+padding:8px 20px; margin:0 5px; border:1px solid var(--border);
+border-radius:20px; cursor:pointer; background:var(--card-soft); color:var(--text); font-size: 13px;
 }
-.week-selector button.active{
-background:var(--accent1);
-color:#000;
-font-weight:bold;
-}
+.week-selector button.active{ background:var(--accent1); color:#000; font-weight:bold; border-color: var(--accent1); }
 
-.tabs{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap;}
-.tab{
-padding:10px 18px;
-border-radius:8px;
-border:none;
-cursor:pointer;
-background:var(--card-soft);
-color:var(--text);
-}
-.tab.active{background:var(--accent2);}
+.tabs{display:flex;gap:8px;margin-bottom:25px;flex-wrap:wrap; justify-content: center;}
+.tab{ padding:10px 16px; border-radius:12px; border:none; cursor:pointer; background:var(--card-soft); color:var(--sub); font-weight: 600; font-size: 13px; transition: 0.3s;}
+.tab.active{background:var(--accent2); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);}
+.tab-comp.active{background:var(--accent3); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);}
 
 .day{display:none;}
-.day.active{display:block;}
+.day.active{display:block; animation: fadeIn 0.3s ease-in-out;}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-.day-card{
-background:var(--card);
-padding:25px;
-border-radius:16px;
-margin-bottom:25px;
-border:1px solid var(--border);
-}
+.day-card{ background:var(--card); padding:25px; border-radius:18px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 
-.day-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
+.block{ margin-bottom:20px; padding:18px; background: rgba(255,255,255,0.02); border-radius:14px; border: 1px solid rgba(255,255,255,0.05); }
+.block h3{ margin-bottom:12px; color: var(--accent2); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
 
-.block{
-margin-bottom:20px;
-padding:15px;
-background:var(--card-soft);
-border-radius:12px;
-}
-
-.block h3{
-margin-bottom:10px;
-color:var(--accent2);
-}
-
+/* Campos Modificables Estilizados */
 .task{
-padding:6px 0;
-border-bottom:1px solid var(--border);
-font-size:14px;
-display:flex;
-align-items:center;
-flex-wrap:wrap;
-gap:6px;
+padding:6px 10px; margin-bottom: 8px; background: var(--card-soft);
+border-radius: 8px; display:flex; align-items:center; gap:10px; border: 1px solid transparent;
 }
+.task:focus-within { border-color: var(--accent2); }
+.task input{ background: transparent; border: none; color: var(--text); font-size: 14px; }
+.task input:focus{ outline: none; }
+.task .input-time{ width:45px; font-weight: bold; color: var(--accent1); text-align: center; }
+.task .input-name{ flex:1; }
 
-.task input[type="number"]{
-width:60px;
-}
-
-.task input[type="text"]{
-flex:1;
-min-width:180px;
-}
+.delete-btn{ background: none; border: none; color: var(--sub); cursor: pointer; font-size: 18px; transition: 0.2s; }
+.delete-btn:hover{ color: var(--danger); }
 
 .add-btn{
-margin-top:10px;
-padding:5px 10px;
-border:none;
-border-radius:6px;
-background:var(--accent2);
-color:white;
-cursor:pointer;
+margin-top:5px; padding:6px 12px; border: 1px dashed var(--accent2);
+border-radius:8px; background: transparent; color: var(--accent2);
+cursor:pointer; font-size: 12px; font-weight: 600;
 }
 
-.checklist{
-margin-top:20px;
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:10px;
+/* Apartado Competencia */
+.comp-input {
+    width: 100%; background: var(--card-soft); border: 1px solid var(--border);
+    color: var(--text); padding: 12px; border-radius: 10px; margin-bottom: 10px;
 }
 
-.player{
-background:var(--card-soft);
-padding:10px;
-border-radius:8px;
-font-size:13px;
-display:flex;
-align-items:center;
-gap:10px;
-}
+.checklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-top: 15px; }
+.player{ background:var(--card-soft); padding:10px; border-radius:10px; font-size:12px; display:flex; align-items:center; gap:10px; cursor: pointer; border: 1px solid transparent;}
+.player:hover { border-color: var(--border); }
+.player input{ accent-color: var(--accent1); width: 16px; height: 16px; }
 
-.progress-container{margin:20px 0;}
-.progress-label{
-display:flex;
-justify-content:space-between;
-font-size:14px;
-margin-bottom:5px;
-}
-
-.progress-bar{
-height:12px;
-background:var(--card-soft);
-border-radius:20px;
-overflow:hidden;
-}
-
-.progress{
-height:100%;
-background:var(--accent1);
-width:0%;
-transition:.4s;
-}
+.progress-container{margin:25px 0;}
+.progress-label{ display:flex; justify-content:space-between; font-size: 13px; margin-bottom:8px; color: var(--sub); }
+.progress-bar{ height:8px; background:var(--card-soft); border-radius:10px; overflow:hidden; }
+.progress{ height:100%; background: var(--accent1); width:0%; transition:0.5s; }
 
 .export-btn{
-margin-top:15px;
-padding:8px 14px;
-border:none;
-border-radius:8px;
-background:var(--accent3);
-cursor:pointer;
-font-weight:bold;
+width: 100%; padding:14px; border:none; border-radius:12px;
+background:var(--accent3); color: #000; cursor:pointer;
+font-weight:bold; text-transform: uppercase; font-size: 12px;
 }
 </style>
 </head>
@@ -172,21 +100,20 @@ font-weight:bold;
 
 <div class="week-selector">
 <button class="active" onclick="changeWeek(3,this)">Semana 3</button>
-<button onclick="changeWeek(4,this)">Semana 4</button>
+<button onclick="changeWeek(4,this)">Semana 4 (Planificación)</button>
 </div>
 
 <div class="tabs">
 <button class="tab active" onclick="showDay('lunes',this)">Lunes</button>
 <button class="tab" onclick="showDay('martes',this)">Martes</button>
 <button class="tab" onclick="showDay('jueves',this)">Jueves</button>
+<button class="tab" style="border: 1px solid var(--accent3)" onclick="showDay('competencia',this)">🏆 Competencia</button>
 </div>
 
 <div id="content"></div>
 
 <script>
-
 let currentWeek = 3;
-
 const playerList = [
 "Juan José Gálvez Rodríguez","Luis Angel Quintero Torres","Nicolás Cadena Molina",
 "Tomás Ruiz Osorio","Juan José Ortiz","Nicolas Tamayo Olano",
@@ -197,110 +124,103 @@ const playerList = [
 "Emanuel Aristizabal","Matías Díaz David","Kevin Vanegas Cano"
 ];
 
-const plans = {
+// Datos de asistencia y competencia independientes
+let attendanceData = {
+    3: { lunes:{}, martes:{}, jueves:{}, competencia:{} },
+    4: { lunes:{}, martes:{}, jueves:{}, competencia:{} }
+};
 
+const plans = {
 3:{
 lunes:{
-inicial:[
-{time:10,name:"Movilidad articular + desplazamiento"},
-{time:10,name:"Secuencia pases + tercer hombre"},
-{time:10,name:"Rondo 4v1 / 5v2"}
-],
-central:[
-{time:20,name:"Posesión 6v6+8"},
-{time:20,name:"Juego condicionado 10v10 (3 carriles)"}
-],
-final:[
-{time:20,name:"Trabajo aeróbico intermitente"}
-]
+inicial:[{time:10,name:"Movilidad articular + desplazamiento"},{time:10,name:"Secuencia pases"},{time:10,name:"Rondo 4v1"}],
+central:[{time:20,name:"Posesión 6v6+8"},{time:20,name:"Juego condicionado"}],
+final:[{time:20,name:"Aeróbico intermitente"}],
+comp: { rival: "Rival Pendiente", fecha: "2026-02-21", resultado: "0-0" }
 },
 martes:{
-inicial:[
-{time:10,name:"Activación cognitiva"},
-{time:10,name:"Preventivos"}
-],
-central:[
-{time:20,name:"Circuito fuerza"},
-{time:15,name:"Rechazos orientados"},
-{time:15,name:"Conservación con comodines"}
-],
-final:[
-{time:20,name:"Pases con finalización"}
-]
+inicial:[{time:10,name:"Activación cognitiva"},{time:10,name:"Preventivos"}],
+central:[{time:20,name:"Circuito fuerza"},{time:15,name:"Rechazos"}],
+final:[{time:20,name:"Finalización"}]
 },
 jueves:{
-inicial:[
-{time:10,name:"Movilidad + desplazamiento"},
-{time:10,name:"Aceleraciones"},
-{time:10,name:"Técnica de carrera"}
-],
-central:[
-{time:20,name:"Duelos 1v1 - 2v2"},
-{time:40,name:"Fútbol alta intensidad"}
-],
-final:[
-{time:10,name:"Estiramientos"}
-]
+inicial:[{time:10,name:"Movilidad"},{time:10,name:"Aceleraciones"}],
+central:[{time:20,name:"Duelos"},{time:40,name:"Fútbol"}],
+final:[{time:10,name:"Estiramientos"}]
 }
 },
-
-4:{
-lunes:{inicial:[],central:[],final:[]},
-martes:{inicial:[],central:[],final:[]},
-jueves:{inicial:[],central:[],final:[]}
+4:{ // Semana limpia para modificar
+lunes:{ inicial:[], central:[], final:[] },
+martes:{ inicial:[], central:[], final:[] },
+jueves:{ inicial:[], central:[], final:[] },
+comp: { rival: "Por definir", fecha: "2026-02-28", resultado: "0-0" }
 }
-
 };
 
 function renderWeek(){
 const container=document.getElementById("content");
 container.innerHTML="";
 
+// Días de entrenamiento
 ["lunes","martes","jueves"].forEach(day=>{
 let data=plans[currentWeek][day];
-
 let html=`
 <div class="day ${day==='lunes'?'active':''}" id="${day}">
 <div class="day-card">
-<div class="day-header">
-<h2>${day.toUpperCase()}</h2>
-<span>Semana ${currentWeek}</span>
-</div>
+<h2 style="margin-bottom:20px; font-size:18px;">${day.toUpperCase()} - SEMANA ${currentWeek}</h2>
 
 ${renderBlock(day,"inicial","Parte Inicial",data.inicial)}
 ${renderBlock(day,"central","Parte Central",data.central)}
 ${renderBlock(day,"final","Parte Final",data.final)}
 
-<div class="progress-container">
-<div class="progress-label">
-<span>Asistencia</span>
-<span id="stat-${day}">0 / 18</span>
-</div>
-<div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
-</div>
-
-<div class="checklist" id="check-${day}"></div>
-<button class="export-btn" onclick="exportToExcel('${day}')">Exportar a Excel</button>
-
+${renderAttendanceSection(day)}
 </div></div>`;
-
 container.innerHTML+=html;
 generateChecklist(day);
 });
+
+// Apartado Competencia
+let compData = plans[currentWeek].comp || { rival: "Rival", fecha: "2026", resultado: "0-0" };
+let compHtml = `
+<div class="day" id="competencia">
+<div class="day-card">
+<h2 style="margin-bottom:20px; font-size:18px; color:var(--accent3)">🏆 INFORME DE COMPETENCIA</h2>
+<div class="block">
+    <label style="font-size:11px; color:var(--sub)">RIVAL / TORNEO</label>
+    <input type="text" class="comp-input" value="${compData.rival}" onchange="plans[currentWeek].comp.rival=this.value">
+    <label style="font-size:11px; color:var(--sub)">FECHA DEL ENCUENTRO</label>
+    <input type="date" class="comp-input" value="${compData.fecha}" onchange="plans[currentWeek].comp.fecha=this.value">
+</div>
+${renderAttendanceSection('competencia')}
+</div></div>`;
+container.innerHTML+=compHtml;
+generateChecklist('competencia');
 }
 
 function renderBlock(day,type,title,data){
 return `
 <div class="block">
 <h3>${title}</h3>
+<div id="tasks-${day}-${type}">
 ${data.map((task,i)=>`
 <div class="task">
-<input type="number" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value"> min
-<input type="text" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
+<input type="number" class="input-time" value="${task.time}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].time=this.value">
+<input type="text" class="input-name" value="${task.name}" onchange="plans[currentWeek]['${day}']['${type}'][${i}].name=this.value">
+<button class="delete-btn" onclick="removeTask('${day}','${type}',${i})">×</button>
+</div>`).join("")}
 </div>
-`).join("")}
-<button class="add-btn" onclick="addTask('${day}','${type}')">+ Agregar actividad</button>
+<button class="add-btn" onclick="addTask('${day}','${type}')">+ Añadir Actividad</button>
 </div>`;
+}
+
+function renderAttendanceSection(day){
+return `
+<div class="progress-container">
+<div class="progress-label"><span>Asistencia / Convocatoria</span><span id="stat-${day}">0 / 18</span></div>
+<div class="progress-bar"><div class="progress" id="prog-${day}"></div></div>
+</div>
+<div class="checklist" id="check-${day}"></div>
+<button class="export-btn" style="margin-top:20px" onclick="exportToExcel('${day}')">Exportar Asistencia (.csv)</button>`;
 }
 
 function addTask(day,type){
@@ -308,36 +228,42 @@ plans[currentWeek][day][type].push({time:10,name:"Nueva actividad"});
 renderWeek();
 }
 
+function removeTask(day,type,index){
+plans[currentWeek][day][type].splice(index, 1);
+renderWeek();
+}
+
 function generateChecklist(day){
 const container=document.getElementById("check-"+day);
+if(!container) return;
 playerList.forEach((name,i)=>{
 let div=document.createElement("div");
 div.className="player";
-div.innerHTML=`<input type="checkbox" onchange="updateProgress('${day}')">
+let isChecked = attendanceData[currentWeek][day][i] ? "checked" : "";
+div.innerHTML=`<input type="checkbox" ${isChecked} onchange="updateProgress('${day}', ${i}, this)">
 <label>${i+1}. ${name}</label>`;
 container.appendChild(div);
 });
+updateProgress(day);
 }
 
-function updateProgress(day){
-const checks=document.querySelectorAll(`#check-${day} input`);
-let checked=0;
-checks.forEach(c=>{if(c.checked)checked++;});
-document.getElementById("prog-"+day).style.width=(checked/checks.length)*100+"%";
-document.getElementById("stat-"+day).innerText=`${checked} / ${checks.length}`;
+function updateProgress(day, index, el){
+if(index !== undefined) attendanceData[currentWeek][day][index] = el.checked;
+const checks = Object.values(attendanceData[currentWeek][day]).filter(v => v).length;
+document.getElementById("prog-"+day).style.width=(checks/playerList.length)*100+"%";
+document.getElementById("stat-"+day).innerText=`${checks} / ${playerList.length}`;
 }
 
 function exportToExcel(day){
-let csv="Jugador,Asistió\n";
-document.querySelectorAll(`#check-${day} .player`).forEach(p=>{
-let name=p.querySelector("label").innerText;
-let checked=p.querySelector("input").checked?"Sí":"No";
-csv+=`${name},${checked}\n`;
+let csv="\ufeffJugador,Asistencia\n";
+playerList.forEach((name, i) => {
+    let status = attendanceData[currentWeek][day][i] ? "Presente" : "Ausente";
+    csv += `${name},${status}\n`;
 });
-let blob=new Blob([csv],{type:"text/csv"});
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
 let link=document.createElement("a");
 link.href=URL.createObjectURL(blob);
-link.download=`Semana${currentWeek}_${day}.csv`;
+link.download=`Asistencia_${day}_S${currentWeek}.csv`;
 link.click();
 }
 
@@ -356,7 +282,6 @@ renderWeek();
 }
 
 renderWeek();
-
 </script>
 
 </body>
